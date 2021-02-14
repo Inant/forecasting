@@ -1,0 +1,7 @@
+.select2-container--default{
+	width : 100%  !important;
+}
+.select2-container--default
+	.select2-results__option--highlighted[aria-selected] {
+	background: #3c4099;
+}
