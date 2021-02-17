@@ -64,6 +64,12 @@
               <p>Purchase Order</p>
             </a>
           </li>
+          <li class="nav-item {{Request::segment(1) == 'bahan-baku' ? 'active' : ''}} ">
+            <a class="nav-link" href="{{ url('bahan-baku') }}">
+              <i class="material-icons">cottage</i>
+              <p>Pemakaian Bahan Baku</p>
+            </a>
+          </li>
         </ul>
       </div>
     </div>

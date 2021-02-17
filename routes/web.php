@@ -25,4 +25,5 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::resource('user', 'UserController');
     Route::resource('purchase-order', 'PurchaseOrderController');
+    Route::resource('bahan-baku', 'BahanBakuController');
 });

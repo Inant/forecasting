@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\PurchaseOrder;
 use Illuminate\Http\Request;
+use App\Models\BahanBaku;
 
-class PurchaseOrderController extends Controller
+class BahanBakuController extends Controller
 {
     private $param;
     
     public function index(Request $request)
     {
-        $this->param['title'] = 'List Purchase Order';
-        $this->param['pageTitle'] = 'Purchase Order';
+        $this->param['title'] = 'List Pemakaian Bahan Baku';
+        $this->param['pageTitle'] = 'Pemakaian Bahan Baku';
         $this->param['bulan'] = array(
             [
                 'bulan' => '01',
@@ -63,30 +63,30 @@ class PurchaseOrderController extends Controller
                 'nama' => 'Desember'
             ],
         );
-        $this->param['year'] = PurchaseOrder::select('tahun')->orderBy('tahun', 'DESC')->groupBy('tahun')->get();
+        $this->param['year'] = BahanBaku::select('tahun')->orderBy('tahun', 'DESC')->groupBy('tahun')->get();
         $this->param['btn']['text'] = 'Tambah Data';
-        $this->param['btn']['link'] = route('purchase-order.create');
+        $this->param['btn']['link'] = route('bahan-baku.create');
 
         try {
             $month = $request->get('month');
             $year = $request->get('year');
             if ($month) {
-                $purchaseOrder = PurchaseOrder::where('bulan', '=', $month)->where('tahun', '=', $year)->orderBy('tahun', 'DESC')->orderBy('bulan', 'DESC')->paginate(10);
+                $bahanBaku = BahanBaku::where('bulan', '=', $month)->where('tahun', '=', $year)->orderBy('tahun', 'DESC')->orderBy('bulan', 'DESC')->paginate(10);
             }
             else{
-                $purchaseOrder = PurchaseOrder::orderBy('tahun', 'DESC')->orderBy('bulan', 'DESC')->paginate(10);
+                $bahanBaku = BahanBaku::orderBy('tahun', 'DESC')->orderBy('bulan', 'DESC')->paginate(10);
             }
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect()->back()->withError('Terjadi Kesalahan ' . $e->getMessage());
         }
                 
-        return \view('purchase-order.list-purchase-order', ['purchaseOrder' => $purchaseOrder], $this->param);
+        return \view('bahan-baku.list-bahan-baku', ['bahanBaku' => $bahanBaku], $this->param);
     }
 
     public function create()
     {
-        $this->param['title'] = 'Tambah Purchase Order';
-        $this->param['pageTitle'] = 'Purchase Order';
+        $this->param['title'] = 'Tambah Pemakaian Bahan Baku';
+        $this->param['pageTitle'] = 'Pemakaian Bahan Baku';
         $this->param['bulan'] = array(
             [
                 'bulan' => '01',
@@ -138,9 +138,9 @@ class PurchaseOrderController extends Controller
             ],
         );
         $this->param['btn']['text'] = 'Lihat Data';
-        $this->param['btn']['link'] = route('purchase-order.index');
+        $this->param['btn']['link'] = route('bahan-baku.index');
 
-        return \view('purchase-order.tambah-purchase-order', $this->param);
+        return \view('bahan-baku.tambah-bahan-baku', $this->param);
     }
 
     public function store(Request $request)
@@ -148,14 +148,11 @@ class PurchaseOrderController extends Controller
         $validatedData = $request->validate([
             'bulan' => 'required',
             'tahun' => 'required',
-            'qty_po' => 'required|numeric|gt:0',
-            'nominal_po' => 'required|numeric|gt:0',
-        ],
-        [
-            'min' => 'Kurang dari minimum'
-        ] );
+            'qty_bahan_baku' => 'required|numeric|gt:0',
+            'nominal_bahan_baku' => 'required|numeric|gt:0',
+        ]);
         try{
-            $cekMonth = PurchaseOrder::where('bulan', $request->get('bulan'))->where('tahun', $request->get('tahun'))->get();
+            $cekMonth = BahanBaku::where('bulan', $request->get('bulan'))->where('tahun', $request->get('tahun'))->get();
             
             if (count($cekMonth) > 0) {
                 return redirect()->back()->withError('Data untuk bulan '.$request->get('bulan'). ' tahun ' . $request->get('tahun') . ' telah diinput.');
@@ -167,14 +164,14 @@ class PurchaseOrderController extends Controller
                 // echo "fail";
             }
     
-            $newPurchaseOrder = new PurchaseOrder;
+            $newBahanBaku = new BahanBaku;
     
-            $newPurchaseOrder->bulan = $request->get('bulan');
-            $newPurchaseOrder->tahun = $request->get('tahun');
-            $newPurchaseOrder->qty_po = $request->get('qty_po');
-            $newPurchaseOrder->nominal_po = $request->get('nominal_po');
+            $newBahanBaku->bulan = $request->get('bulan');
+            $newBahanBaku->tahun = $request->get('tahun');
+            $newBahanBaku->qty_bahan_baku = $request->get('qty_bahan_baku');
+            $newBahanBaku->nominal_bahan_baku = $request->get('nominal_bahan_baku');
     
-            $newPurchaseOrder->save();
+            $newBahanBaku->save();
     
             return redirect()->back()->withStatus('Data berhasil ditambahkan.');
         }
@@ -242,10 +239,10 @@ class PurchaseOrderController extends Controller
                 ],
             );
             $this->param['btn']['text'] = 'Lihat Data';
-            $this->param['btn']['link'] = route('purchase-order.index');
-            $this->param['purchaseOrder'] = PurchaseOrder::find($id);
+            $this->param['btn']['link'] = route('bahan-baku.index');
+            $this->param['bahanBaku'] = BahanBaku::find($id);
 
-            return \view('purchase-order.edit-purchase-order', $this->param);
+            return \view('bahan-baku.edit-bahan-baku', $this->param);
         }
         catch(\Exception $e){
             return redirect()->back()->withError('Terjadi kesalahan : '. $e->getMessage());
@@ -257,45 +254,44 @@ class PurchaseOrderController extends Controller
 
     public function update(Request $request, $id)
     {
-        $purchaseOrder = PurchaseOrder::find($id);
+        $bahanBaku = BahanBaku::find($id);
 
-        $cekMonth = PurchaseOrder::where('bulan', $request->get('bulan'))->where('tahun', $request->get('tahun'))->get();
+        $cekMonth = BahanBaku::where('bulan', $request->get('bulan'))->where('tahun', $request->get('tahun'))->get();
         
         if (count($cekMonth) > 0) {
-            if ($cekMonth[0]->bulan != $purchaseOrder->bulan && $cekMonth[0]->tahun == $purchaseOrder->tahun) {
+            if ($cekMonth[0]->bulan != $bahanBaku->bulan && $cekMonth[0]->tahun == $bahanBaku->tahun) {
                 return redirect()->back()->withError('Data untuk bulan '.$request->get('bulan'). ' tahun ' . $request->get('tahun') . ' telah diinput.');
             }
-            elseif ($cekMonth[0]->bulan == $purchaseOrder->bulan && $cekMonth[0]->tahun != $purchaseOrder->tahun) {
+            elseif ($cekMonth[0]->bulan == $bahanBaku->bulan && $cekMonth[0]->tahun != $bahanBaku->tahun) {
                 return redirect()->back()->withError('Data untuk bulan '.$request->get('bulan'). ' tahun ' . $request->get('tahun') . ' telah diinput.');
             }
             
             // echo "<pre>";
             // print_r ($cekMonth[0]->tahun);
             // echo "</pre>";
-            // echo $cekMonth[0]->bulan != $purchaseOrder->bulan && $cekMonth[0]->tahun == $purchaseOrder->tahun;
+            // echo $cekMonth[0]->bulan != $bahanBaku->bulan && $cekMonth[0]->tahun == $bahanBaku->tahun;
             
         }
-        // echo $cekMonth[0]->bulan == $purchaseOrder->bulan && $cekMonth[0]->tahun != $purchaseOrder->tahun;
+        // echo $cekMonth[0]->bulan == $bahanBaku->bulan && $cekMonth[0]->tahun != $bahanBaku->tahun;
 
         if ($request->get('bulan') > date('m') && $request->get('tahun') >= date('Y')) {
             return redirect()->back()->withError('Bulan dan tahun tidak valid.');
             // echo "fail";
         }
 
-        
         $validatedData = $request->validate([
             'bulan' => 'required',
             'tahun' => 'required',
-            'qty_po' => 'required|numeric|gt:0',
-            'nominal_po' => 'required|numeric|gt:0',
+            'qty_bahan_baku' => 'required|numeric|gt:0',
+            'nominal_bahan_baku' => 'required|numeric|gt:0',
         ]);
         try{
 
-            $purchaseOrder->bulan = $request->get('bulan');
-            $purchaseOrder->tahun = $request->get('tahun');
-            $purchaseOrder->qty_po = $request->get('qty_po');
-            $purchaseOrder->nominal_po = $request->get('nominal_po');
-            $purchaseOrder->save();
+            $bahanBaku->bulan = $request->get('bulan');
+            $bahanBaku->tahun = $request->get('tahun');
+            $bahanBaku->qty_bahan_baku = $request->get('qty_bahan_baku');
+            $bahanBaku->nominal_bahan_baku = $request->get('nominal_bahan_baku');
+            $bahanBaku->save();
 
             return redirect()->back()->withStatus('Data berhasil diperbarui.');
         }
@@ -310,17 +306,17 @@ class PurchaseOrderController extends Controller
     public function destroy($id)
     {
         try{
-            $purchaseOrder = PurchaseOrder::findOrFail($id);
+            $bahanBaku = BahanBaku::findOrFail($id);
 
-            $purchaseOrder->delete();
+            $bahanBaku->delete();
 
-            return redirect()->route('purchase-order.index')->withStatus('Data berhasil dihapus.');
+            return redirect()->route('bahan-baku.index')->withStatus('Data berhasil dihapus.');
         }
         catch(\Exception $e){
-            return redirect()->route('purchase-order.index')->withError('Terjadi kesalahan : '. $e->getMessage());
+            return redirect()->route('bahan-baku.index')->withError('Terjadi kesalahan : '. $e->getMessage());
         }
         catch(\Illuminate\Database\QueryException $e){
-            return redirect()->route('purchase-order.index')->withError('Terjadi kesalahan pada database : '. $e->getMessage());
+            return redirect()->route('bahan-baku.index')->withError('Terjadi kesalahan pada database : '. $e->getMessage());
         }
         
     }
