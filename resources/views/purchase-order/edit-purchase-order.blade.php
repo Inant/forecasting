@@ -87,13 +87,20 @@
                                             <div class="form-group label-floating @error('qty_po')
                                             has-error @enderror">
                                                 <label class="control-label">Quantity Purchase Order *</label>
-                                                <input type="number" step=".01" value="{{old('qty_po', $purchaseOrder->qty_po)}}" class="form-control @error('qty_po') is-invalid @enderror" name="qty_po" autocomplete="off" />
-                                                <span class="material-icons form-control-feedback">clear</span>
-                                                @error('qty_po')
-                                                    <div class="invalid-feedback">
-                                                        <h6>{{$message}}</h6>
+                                                <div class="input-group">
+                                                    <input type="number" step=".01" value="{{old('qty_po', $purchaseOrder->qty_po)}}" class="form-control @error('qty_po') is-invalid @enderror" name="qty_po" autocomplete="off" />
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            M<sup>3</sup>
+                                                        </span>
                                                     </div>
-                                                @enderror
+                                                    <span class="material-icons form-control-feedback">clear</span>
+                                                    @error('qty_po')
+                                                        <div class="invalid-feedback">
+                                                            <h6>{{$message}}</h6>
+                                                        </div>
+                                                    @enderror
+                                                </div>
                                             </div>
                                         </div>
                                         

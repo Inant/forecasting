@@ -86,8 +86,8 @@
                                                 <td>{{$no}}</td>
                                                 <td>{{$value->bulan}}</td>
                                                 <td>{{$value->tahun}}</td>
-                                                <td>{{$value->qty_bahan_baku}}</td>
-                                                <td>{{number_format($value->nominal_bahan_baku, 2, ',', '.')}}</td>
+                                                <td>{{$value->qty_bahan_baku}} M<sup>3</sup></td>
+                                                <td>Rp {{number_format($value->nominal_bahan_baku, 2, ',', '.')}}</td>
                                                 <td>
                                                     <form action="{{ route('bahan-baku.destroy', $value) }}" method="post">
                                                         <a href="{{ route('bahan-baku.edit', $value) }}" rel="tooltip" title="Edit" class="btn btn-white btn-link btn-sm"><i class="material-icons">edit</i></a>

@@ -37,12 +37,13 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header card-header-success">
-                            <h4 class="card-title ">Tambah Data Purchase Order</h4>
+                            <h4 class="card-title ">Edit Hasil Produksi</h4>
                             {{-- <p class="card-category">Semua User</p> --}}
                         </div>
                         <div class="card-body">
-                                <form method="POST" action="{{ route('purchase-order.store') }}">
+                                <form method="POST" action="{{ route('hasil-produksi.update', $hasilProduksi->id) }}">
                                     @csrf
+                                    @method('PUT')
                                     <div class="row mt-3">
                                         <div class="col-md-12 mb-3">
                                             <div class="form-group label-floating @error('bulan')
@@ -51,7 +52,7 @@
                                                 <select name="bulan" id="bulan" class="form-control" required>
                                                     <option value="" style="color: black">--Bulan--</option>
                                                     @foreach ($bulan as $item)
-                                                        <option value="{{$item['bulan']}}" style="color: black" {{old('bulan') == $item['bulan'] ? 'selected' : '' }}>{{$item['nama']}}</option>
+                                                        <option value="{{$item['bulan']}}" style="color: black" {{old('bulan', $hasilProduksi->bulan) == $item['bulan'] ? 'selected' : '' }}>{{$item['nama']}}</option>
                                                     @endforeach
                                                 </select>
                                                 <span class="material-icons form-control-feedback">clear</span>
@@ -70,7 +71,7 @@
                                                 <select name="tahun" id="tahun" class="form-control" required>
                                                     <option value="" style="color: black">--Tahun--</option>
                                                     @for ($y = 2018; $y <= date('Y'); $y++)
-                                                        <option value="{{$y}}" style="color: black" {{old('tahun', date('Y')) == $y ? 'selected' : '' }}>{{$y}}</option>
+                                                        <option value="{{$y}}" style="color: black" {{old('tahun', $hasilProduksi->tahun) == $y ? 'selected' : '' }}>{{$y}}</option>
                                                     @endfor
                                                 </select>
                                                 <span class="material-icons form-control-feedback">clear</span>
@@ -83,37 +84,23 @@
                                         </div>
 
                                         <div class="col-md-12 mb-3">
-                                            <div class="form-group label-floating @error('qty_po')
+                                            <div class="form-group label-floating @error('qty_hasil_produksi')
                                             has-error @enderror">
-                                                <label class="control-label">Quantity Purchase Order *</label>
+                                                <label class="control-label">Quantity Hasil Produksi *</label>
                                                 <div class="input-group">
-                                                    <input type="number" step=".01" value="{{old('qty_po')}}" class="form-control @error('qty_po') is-invalid @enderror" name="qty_po" autocomplete="off" />
+                                                    <input type="number" step=".01" value="{{old('qty_hasil_produksi', $hasilProduksi->qty_hasil_produksi)}}" class="form-control @error('qty_hasil_produksi') is-invalid @enderror" name="qty_hasil_produksi" autocomplete="off" />
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text">
                                                             M<sup>3</sup>
                                                         </span>
                                                     </div>
                                                     <span class="material-icons form-control-feedback">clear</span>
-                                                    @error('qty_po')
+                                                    @error('qty_hasil_produksi')
                                                         <div class="invalid-feedback">
                                                             <h6>{{$message}}</h6>
                                                         </div>
                                                     @enderror
                                                 </div>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="col-md-12 mb-3">
-                                            <div class="form-group label-floating @error('nominal_po')
-                                            has-error @enderror">
-                                                <label class="control-label">Nominal *</label>
-                                                <input type="number" step=".01" value="{{old('nominal_po')}}" class="form-control @error('nominal_po') is-invalid @enderror" name="nominal_po" autocomplete="off" />
-                                                <span class="material-icons form-control-feedback">clear</span>
-                                                @error('nominal_po')
-                                                    <div class="invalid-feedback">
-                                                        <h6>{{$message}}</h6>
-                                                    </div>
-                                                @enderror
                                             </div>
                                         </div>
 

@@ -58,16 +58,22 @@
               <p>User</p>
             </a>
           </li>
-          <li class="nav-item {{Request::segment(1) == 'purchase-order' ? 'active' : ''}} ">
-            <a class="nav-link" href="{{ url('purchase-order') }}">
-              <i class="material-icons">point_of_sale</i>
-              <p>Purchase Order</p>
-            </a>
-          </li>
           <li class="nav-item {{Request::segment(1) == 'bahan-baku' ? 'active' : ''}} ">
             <a class="nav-link" href="{{ url('bahan-baku') }}">
               <i class="material-icons">cottage</i>
               <p>Pemakaian Bahan Baku</p>
+            </a>
+          </li>
+          <li class="nav-item {{Request::segment(1) == 'hasil-produksi' ? 'active' : ''}} ">
+            <a class="nav-link" href="{{ url('hasil-produksi') }}">
+              <i class="material-icons">layers</i>
+              <p>Hasil Produksi</p>
+            </a>
+          </li>
+          <li class="nav-item {{Request::segment(1) == 'purchase-order' ? 'active' : ''}} ">
+            <a class="nav-link" href="{{ url('purchase-order') }}">
+              <i class="material-icons">point_of_sale</i>
+              <p>Purchase Order</p>
             </a>
           </li>
         </ul>

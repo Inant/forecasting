@@ -35,7 +35,7 @@
                     <a href="{{$btn['link']}}" class="btn btn-success"><i class="material-icons">add</i> {{$btn['text']}}</a>
                 </div>
                 <div class="col-auto ml-auto">
-                    <form class="navbar-form" action="{{ route('purchase-order.index') }}" method="GET">
+                    <form class="navbar-form" action="{{ route('hasil-produksi.index') }}" method="GET">
                         <div class="input-group no-border">
                             {{-- <input type="text" value="{{Request::get('keyword')}}" class="form-control form-control-success" placeholder="Search..." name="keyword"> --}}
                             <select name="month" class="form-control" style="background:transparent;color:white" id="bulan">
@@ -60,7 +60,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header card-header-success">
-                            <h4 class="card-title ">List Purchase Order</h4>
+                            <h4 class="card-title ">List Hasil Produksi</h4>
                             {{-- <p class="card-category">Semua User</p> --}}
                         </div>
                         <div class="card-body">
@@ -72,8 +72,7 @@
                                             <td>Bulan</td>
                                             <td>Tahun</td>
                                             <td>Quantity</td>
-                                            <td>Nominal</td>
-                                            <td>Stock Opname</td>
+                                            <td>Rendemen</td>
                                             <td>Opsi</td>
                                         </tr>
                                     </thead>
@@ -82,17 +81,16 @@
                                             $page = Request::get('page');
                                             $no = !$page || $page == 1 ? 1 : ($page - 1) * 10 + 1;
                                         @endphp
-                                        @foreach ($purchaseOrder as $value)
+                                        @foreach ($hasilProduksi as $value)
                                             <tr>
                                                 <td>{{$no}}</td>
                                                 <td>{{$value->bulan}}</td>
                                                 <td>{{$value->tahun}}</td>
-                                                <td>{{$value->qty_po}} M<sup>3</sup></td>
-                                                <td>{{number_format($value->nominal_po, 2, ',', '.')}}</td>
-                                                <td>{{$value->stock_opname}} M<sup>3</sup></td>
+                                                <td>{{$value->qty_hasil_produksi}} M<sup>3</sup></td>
+                                                <td>{{$value->rendemen}} %</td>
                                                 <td>
-                                                    <form action="{{ route('purchase-order.destroy', $value) }}" method="post">
-                                                        <a href="{{ route('purchase-order.edit', $value) }}" rel="tooltip" title="Edit" class="btn btn-white btn-link btn-sm"><i class="material-icons">edit</i></a>
+                                                    <form action="{{ route('hasil-produksi.destroy', $value) }}" method="post">
+                                                        <a href="{{ route('hasil-produksi.edit', $value) }}" rel="tooltip" title="Edit" class="btn btn-white btn-link btn-sm"><i class="material-icons">edit</i></a>
                                                         @csrf
                                                         @method('delete')
                                                         <button type="button" rel="tooltip" title="Hapus" class="btn btn-white btn-link btn-sm" onclick="confirm('{{ __("Apakah anda yakin ingin menghapus?") }}') ? this.parentElement.submit() : ''">
@@ -107,7 +105,7 @@
                                         @endforeach
                                     </tbody>
                                 </table>
-                                {{$purchaseOrder->appends(Request::all())->links('vendor.pagination.custom')}}
+                                {{$hasilProduksi->appends(Request::all())->links('vendor.pagination.custom')}}
                             </div>
                         </div>
                     </div>

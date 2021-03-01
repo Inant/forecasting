@@ -37,11 +37,11 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header card-header-success">
-                            <h4 class="card-title ">Tambah Data Purchase Order</h4>
+                            <h4 class="card-title ">Tambah Data Hasil Produksi</h4>
                             {{-- <p class="card-category">Semua User</p> --}}
                         </div>
                         <div class="card-body">
-                                <form method="POST" action="{{ route('purchase-order.store') }}">
+                                <form method="POST" action="{{ route('hasil-produksi.store') }}">
                                     @csrf
                                     <div class="row mt-3">
                                         <div class="col-md-12 mb-3">
@@ -83,37 +83,23 @@
                                         </div>
 
                                         <div class="col-md-12 mb-3">
-                                            <div class="form-group label-floating @error('qty_po')
+                                            <div class="form-group label-floating @error('qty_hasil_produksi')
                                             has-error @enderror">
-                                                <label class="control-label">Quantity Purchase Order *</label>
+                                                <label class="control-label">Quantity Hasil Produksi *</label>
                                                 <div class="input-group">
-                                                    <input type="number" step=".01" value="{{old('qty_po')}}" class="form-control @error('qty_po') is-invalid @enderror" name="qty_po" autocomplete="off" />
+                                                    <input type="number" step=".01" value="{{old('qty_hasil_produksi')}}" class="form-control @error('qty_hasil_produksi') is-invalid @enderror" name="qty_hasil_produksi" autocomplete="off" />
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text">
                                                             M<sup>3</sup>
                                                         </span>
                                                     </div>
                                                     <span class="material-icons form-control-feedback">clear</span>
-                                                    @error('qty_po')
+                                                    @error('qty_hasil_produksi')
                                                         <div class="invalid-feedback">
                                                             <h6>{{$message}}</h6>
                                                         </div>
                                                     @enderror
                                                 </div>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="col-md-12 mb-3">
-                                            <div class="form-group label-floating @error('nominal_po')
-                                            has-error @enderror">
-                                                <label class="control-label">Nominal *</label>
-                                                <input type="number" step=".01" value="{{old('nominal_po')}}" class="form-control @error('nominal_po') is-invalid @enderror" name="nominal_po" autocomplete="off" />
-                                                <span class="material-icons form-control-feedback">clear</span>
-                                                @error('nominal_po')
-                                                    <div class="invalid-feedback">
-                                                        <h6>{{$message}}</h6>
-                                                    </div>
-                                                @enderror
                                             </div>
                                         </div>
 
