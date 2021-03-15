@@ -24,7 +24,11 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 
 Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::resource('user', 'UserController');
+    Route::resource('pembelian-bahan-baku', 'PembelianBahanBakuController');
+    Route::resource('pembelian-sparepart', 'PembelianSparepartController');
+    Route::resource('pemakaian-sparepart', 'PemakaianSparepartController');
     Route::resource('bahan-baku', 'BahanBakuController');
     Route::resource('hasil-produksi', 'HasilProduksiController');
+    Route::resource('pemakaian-barang-jadi', 'PemakaianBarangJadiController');
     Route::resource('purchase-order', 'PurchaseOrderController');
 });

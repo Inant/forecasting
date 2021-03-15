@@ -58,16 +58,40 @@
               <p>User</p>
             </a>
           </li>
+          <li class="nav-item {{Request::segment(1) == 'pembelian-bahan-baku' ? 'active' : ''}} ">
+            <a class="nav-link" href="{{ url('pembelian-bahan-baku') }}">
+              <i class="material-icons">cottage</i>
+              <p>Pembelian Bahan Baku</p>
+            </a>
+          </li>
+          <li class="nav-item {{Request::segment(1) == 'pembelian-sparepart' ? 'active' : ''}} ">
+            <a class="nav-link" href="{{ url('pembelian-sparepart') }}">
+              <i class="material-icons">cottage</i>
+              <p>Pembelian Bahan Penunjang</p>
+            </a>
+          </li>
           <li class="nav-item {{Request::segment(1) == 'bahan-baku' ? 'active' : ''}} ">
             <a class="nav-link" href="{{ url('bahan-baku') }}">
               <i class="material-icons">cottage</i>
               <p>Pemakaian Bahan Baku</p>
             </a>
           </li>
+          <li class="nav-item {{Request::segment(1) == 'pemakaian-sparepart' ? 'active' : ''}} ">
+            <a class="nav-link" href="{{ url('pemakaian-sparepart') }}">
+              <i class="material-icons">cottage</i>
+              <p>Pemakaian Bahan Penunjang</p>
+            </a>
+          </li>
           <li class="nav-item {{Request::segment(1) == 'hasil-produksi' ? 'active' : ''}} ">
             <a class="nav-link" href="{{ url('hasil-produksi') }}">
               <i class="material-icons">layers</i>
               <p>Hasil Produksi</p>
+            </a>
+          </li>
+          <li class="nav-item {{Request::segment(1) == 'pemakaian-barang-jadi' ? 'active' : ''}} ">
+            <a class="nav-link" href="{{ url('pemakaian-barang-jadi') }}">
+              <i class="material-icons">cottage</i>
+              <p>Pemakaian Barang Jadi</p>
             </a>
           </li>
           <li class="nav-item {{Request::segment(1) == 'purchase-order' ? 'active' : ''}} ">
