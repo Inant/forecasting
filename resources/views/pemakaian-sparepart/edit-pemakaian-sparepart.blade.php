@@ -84,18 +84,18 @@
                                         </div>
 
                                         <div class="col-md-12 mb-3">
-                                            <div class="form-group label-floating @error('qty_pembelian')
+                                            <div class="form-group label-floating @error('qty_pemakaian')
                                             has-error @enderror">
                                                 <label class="control-label">Quantity Pemakaian Bahan Penunjang *</label>
                                                 <div class="input-group">
-                                                    <input type="number" step=".01" value="{{old('qty_pembelian', $pemakaianSparepart->qty_pembelian)}}" class="form-control @error('qty_pembelian') is-invalid @enderror" name="qty_pembelian" autocomplete="off" />
+                                                    <input type="number" step=".01" value="{{old('qty_pemakaian', $pemakaianSparepart->qty_pemakaian)}}" class="form-control @error('qty_pemakaian') is-invalid @enderror" name="qty_pemakaian" autocomplete="off" />
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text">
                                                             M<sup>3</sup>
                                                         </span>
                                                     </div>
                                                     <span class="material-icons form-control-feedback">clear</span>
-                                                    @error('qty_pembelian')
+                                                    @error('qty_pemakaian')
                                                         <div class="invalid-feedback">
                                                             <h6>{{$message}}</h6>
                                                         </div>
@@ -105,12 +105,12 @@
                                         </div>
                                         
                                         <div class="col-md-12 mb-3">
-                                            <div class="form-group label-floating @error('nominal_pembelian')
+                                            <div class="form-group label-floating @error('nominal_pemakaian')
                                             has-error @enderror">
                                                 <label class="control-label">Nominal *</label>
-                                                <input type="number" step=".01" value="{{old('nominal_pembelian', $pemakaianSparepart->nominal_pembelian)}}" class="form-control @error('nominal_pembelian') is-invalid @enderror" name="nominal_pembelian" autocomplete="off" />
+                                                <input type="number" step=".01" value="{{old('nominal_pemakaian', $pemakaianSparepart->nominal_pemakaian)}}" class="form-control @error('nominal_pemakaian') is-invalid @enderror" name="nominal_pemakaian" autocomplete="off" />
                                                 <span class="material-icons form-control-feedback">clear</span>
-                                                @error('nominal_pembelian')
+                                                @error('nominal_pemakaian')
                                                     <div class="invalid-feedback">
                                                         <h6>{{$message}}</h6>
                                                     </div>

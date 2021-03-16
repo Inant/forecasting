@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use \App\Models\PemakaianBarangJadi;
-
+use \App\Models\StockOpname;
 class PemakaianBarangJadiController extends Controller
 {
     private $param;
@@ -171,6 +171,22 @@ class PemakaianBarangJadiController extends Controller
             $newPemakaianBarangJadi->qty_pemakaian = $request->get('qty_pemakaian');
     
             $newPemakaianBarangJadi->save();
+
+            $cekStockOpname = StockOpname::where('bulan', $request->get('bulan'))->where('tahun', $request->get('tahun'))->count();
+
+            if ($cekStockOpname > 0) {
+                StockOpname::where('bulan', $request->get('bulan'))->where('tahun', $request->get('tahun'))
+                ->update([
+                    'barang_jadi' => \DB::raw('barang_jadi-' . $request->get('qty_pemakaian'))
+                ]);
+            }
+            else{
+                $stockOpname = new StockOpname;
+                $stockOpname->bulan = $request->get('bulan');
+                $stockOpname->tahun = $request->get('tahun');
+                $stockOpname->barang_jadi = $stockOpname->barang_jadi - $request->get('qty_pemakaian');
+                $stockOpname->save();
+            }
     
             return redirect()->back()->withStatus('Data berhasil ditambahkan.');
         }
@@ -286,10 +302,32 @@ class PemakaianBarangJadiController extends Controller
         ]);
         try{
 
+            StockOpname::where('bulan', $pemakaianBarangJadi->bulan)->where('tahun', $pemakaianBarangJadi->tahun)
+                ->update([
+                    'barang_jadi' => \DB::raw('barang_jadi+' . $pemakaianBarangJadi->qty_pemakaian)
+                ]);
+
+
             $pemakaianBarangJadi->bulan = $request->get('bulan');
             $pemakaianBarangJadi->tahun = $request->get('tahun');
             $pemakaianBarangJadi->qty_pemakaian = $request->get('qty_pemakaian');
             $pemakaianBarangJadi->save();
+
+            $cekStockOpname = StockOpname::where('bulan', $request->get('bulan'))->where('tahun', $request->get('tahun'))->count();
+
+            if ($cekStockOpname > 0) {
+                StockOpname::where('bulan', $request->get('bulan'))->where('tahun', $request->get('tahun'))
+                ->update([
+                    'barang_jadi' => \DB::raw('barang_jadi-' . $request->get('qty_pemakaian'))
+                ]);
+            }
+            else{
+                $stockOpname = new StockOpname;
+                $stockOpname->bulan = $request->get('bulan');
+                $stockOpname->tahun = $request->get('tahun');
+                $stockOpname->barang_jadi = $stockOpname->barang_jadi - $request->get('qty_pemakaian');
+                $stockOpname->save();
+            }
 
             return redirect()->back()->withStatus('Data berhasil diperbarui.');
         }
@@ -305,6 +343,10 @@ class PemakaianBarangJadiController extends Controller
     {
         try{
             $pemakaianBarangJadi = PemakaianBarangJadi::findOrFail($id);
+            StockOpname::where('bulan', $pemakaianBarangJadi->bulan)->where('tahun', $pemakaianBarangJadi->tahun)
+                ->update([
+                    'barang_jadi' => \DB::raw('barang_jadi+' . $pemakaianBarangJadi->qty_pemakaian)
+                ]);
 
             $pemakaianBarangJadi->delete();
 

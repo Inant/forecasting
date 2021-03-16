@@ -37,7 +37,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header card-header-success">
-                            <h4 class="card-title ">Tambah Pemakaian Bahan Baku</h4>
+                            <h4 class="card-title ">Edit Pemakaian Bahan Baku</h4>
                             {{-- <p class="card-category">Semua User</p> --}}
                         </div>
                         <div class="card-body">
@@ -86,7 +86,7 @@
                                         <div class="col-md-12 mb-3">
                                             <div class="form-group label-floating @error('qty_bahan_baku')
                                             has-error @enderror">
-                                                <label class="control-label">Quantity Purchase Order *</label>
+                                                <label class="control-label">Quantity Pemakaian *</label>
                                                 <div class="input-group">
                                                     <input type="number" step=".01" value="{{old('qty_bahan_baku', $bahanBaku->qty_bahan_baku)}}" class="form-control @error('qty_bahan_baku') is-invalid @enderror" name="qty_bahan_baku" autocomplete="off" />
                                                     <div class="input-group-prepend">

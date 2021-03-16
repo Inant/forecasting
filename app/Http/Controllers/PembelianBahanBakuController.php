@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PembelianBahanBaku;
+use App\Models\StockOpname;
 use Illuminate\Http\Request;
 
 class PembelianBahanBakuController extends Controller
@@ -170,8 +171,24 @@ class PembelianBahanBakuController extends Controller
             $newPembelianBahanBaku->tahun = $request->get('tahun');
             $newPembelianBahanBaku->qty_pembelian = $request->get('qty_pembelian');
             $newPembelianBahanBaku->nominal_pembelian = $request->get('nominal_pembelian');
-    
+
             $newPembelianBahanBaku->save();
+
+            $cekStockOpname = StockOpname::where('bulan', $request->get('bulan'))->where('tahun', $request->get('tahun'))->count();
+
+            if ($cekStockOpname > 0) {
+                StockOpname::where('bulan', $request->get('bulan'))->where('tahun', $request->get('tahun'))
+                ->update([
+                    'bahan_baku' => \DB::raw('bahan_baku+' . $request->get('qty_pembelian'))
+                ]);
+            }
+            else{
+                $stockOpname = new StockOpname;
+                $stockOpname->bulan = $request->get('bulan');
+                $stockOpname->tahun = $request->get('tahun');
+                $stockOpname->bahan_baku = $request->get('qty_pembelian');
+                $stockOpname->save();
+            }
     
             return redirect()->back()->withStatus('Data berhasil ditambahkan.');
         }
@@ -286,12 +303,34 @@ class PembelianBahanBakuController extends Controller
             'nominal_pembelian' => 'required|numeric|gt:0',
         ]);
         try{
+            // balikan stock opname terlebih dahulu
+            StockOpname::where('bulan', $pembelianBahanBaku->bulan)->where('tahun', $pembelianBahanBaku->tahun)
+                ->update([
+                    'bahan_baku' => \DB::raw('bahan_baku-' . $pembelianBahanBaku->qty_pembelian)
+                ]);
 
             $pembelianBahanBaku->bulan = $request->get('bulan');
             $pembelianBahanBaku->tahun = $request->get('tahun');
             $pembelianBahanBaku->qty_pembelian = $request->get('qty_pembelian');
             $pembelianBahanBaku->nominal_pembelian = $request->get('nominal_pembelian');
             $pembelianBahanBaku->save();
+
+            $cekStockOpname = StockOpname::where('bulan', $request->get('bulan'))->where('tahun', $request->get('tahun'))->count();
+
+            if ($cekStockOpname > 0) {
+                StockOpname::where('bulan', $request->get('bulan'))->where('tahun', $request->get('tahun'))
+                ->update([
+                    'bahan_baku' => \DB::raw('bahan_baku+' . $request->get('qty_pembelian'))
+                ]);
+            }
+            else{
+                StockOpname::create([
+                    'bulan' => $request->get('bulan'),
+                    'tahun' => $request->get('tahun'),
+                    'bahan_baku' => $request->get('qty_pembelian'),
+                    'created_at' => date('Y-m-d H:i:s')
+                ]);
+            }
 
             return redirect()->back()->withStatus('Data berhasil diperbarui.');
         }
@@ -307,6 +346,11 @@ class PembelianBahanBakuController extends Controller
     {
         try{
             $pembelianBahanBaku = PembelianBahanBaku::findOrFail($id);
+
+            StockOpname::where('bulan', $pembelianBahanBaku->bulan)->where('tahun', $pembelianBahanBaku->tahun)
+                ->update([
+                    'bahan_baku' => \DB::raw('bahan_baku-' . $pembelianBahanBaku->qty_pembelian)
+                ]);
 
             $pembelianBahanBaku->delete();
 

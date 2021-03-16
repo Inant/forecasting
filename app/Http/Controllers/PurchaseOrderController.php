@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\PurchaseOrder;
 use App\Models\HasilProduksi;
 use Illuminate\Http\Request;
+use \App\Models\StockOpname;
 
 class PurchaseOrderController extends Controller
 {
@@ -181,7 +182,7 @@ class PurchaseOrderController extends Controller
             }
 
             // get stock opname di periode sebelumnya
-            $stockOpname = PurchaseOrder::select('stock_opname')->where('bulan', $bulanSebelumnya)->where('tahun', $tahunSebelumnya)->get()[0];
+            // $stockOpname = PurchaseOrder::select('stock_opname')->where('bulan', $bulanSebelumnya)->where('tahun', $tahunSebelumnya)->get()[0];
 
             $newPurchaseOrder = new PurchaseOrder;
     
@@ -189,9 +190,25 @@ class PurchaseOrderController extends Controller
             $newPurchaseOrder->tahun = $request->get('tahun');
             $newPurchaseOrder->qty_po = $request->get('qty_po');
             $newPurchaseOrder->nominal_po = $request->get('nominal_po');
-            $newPurchaseOrder->stock_opname = $stockOpname->stock_opname + $hasilProduksi->qty_hasil_produksi - $request->get('qty_po');
+            // $newPurchaseOrder->stock_opname = $stockOpname->stock_opname + $hasilProduksi->qty_hasil_produksi - $request->get('qty_po');
     
             $newPurchaseOrder->save();
+
+            $cekStockOpname = StockOpname::where('bulan', $request->get('bulan'))->where('tahun', $request->get('tahun'))->count();
+
+            if ($cekStockOpname > 0) {
+                StockOpname::where('bulan', $request->get('bulan'))->where('tahun', $request->get('tahun'))
+                ->update([
+                    'barang_jadi' => \DB::raw('barang_jadi-' . $request->get('qty_po'))
+                ]);
+            }
+            else{
+                $stockOpname = new StockOpname;
+                $stockOpname->bulan = $request->get('bulan');
+                $stockOpname->tahun = $request->get('tahun');
+                $stockOpname->barang_jadi = $stockOpname->barang_jadi - $request->get('qty_po');
+                $stockOpname->save();
+            }
     
             return redirect()->back()->withStatus('Data berhasil ditambahkan.');
         }
@@ -307,7 +324,10 @@ class PurchaseOrderController extends Controller
             'nominal_po' => 'required|numeric|gt:0',
         ]);
         try{
-
+            StockOpname::where('bulan', $purchaseOrder->bulan)->where('tahun', $purchaseOrder->tahun)
+                ->update([
+                    'barang_jadi' => \DB::raw('barang_jadi+' . $purchaseOrder->qty_po)
+                ]);
             // get hasil produksi by periode produksi
             $hasilProduksi = HasilProduksi::select('qty_hasil_produksi')->where('bulan', $request->get('bulan'))->where('tahun', $request->get('tahun'))->get()[0];
 
@@ -321,14 +341,30 @@ class PurchaseOrderController extends Controller
             }
 
             // get stock opname di periode sebelumnya
-            $stockOpname = PurchaseOrder::select('stock_opname')->where('bulan', $bulanSebelumnya)->where('tahun', $tahunSebelumnya)->get()[0];
+            // $stockOpname = PurchaseOrder::select('stock_opname')->where('bulan', $bulanSebelumnya)->where('tahun', $tahunSebelumnya)->get()[0];
 
             $purchaseOrder->bulan = $request->get('bulan');
             $purchaseOrder->tahun = $request->get('tahun');
             $purchaseOrder->qty_po = $request->get('qty_po');
             $purchaseOrder->nominal_po = $request->get('nominal_po');
-            $purchaseOrder->stock_opname = $stockOpname->stock_opname + $hasilProduksi->qty_hasil_produksi - $request->get('qty_po');
+            // $purchaseOrder->stock_opname = $stockOpname->stock_opname + $hasilProduksi->qty_hasil_produksi - $request->get('qty_po');
             $purchaseOrder->save();
+
+            $cekStockOpname = StockOpname::where('bulan', $request->get('bulan'))->where('tahun', $request->get('tahun'))->count();
+
+            if ($cekStockOpname > 0) {
+                StockOpname::where('bulan', $request->get('bulan'))->where('tahun', $request->get('tahun'))
+                ->update([
+                    'barang_jadi' => \DB::raw('barang_jadi-' . $request->get('qty_po'))
+                ]);
+            }
+            else{
+                $stockOpname = new StockOpname;
+                $stockOpname->bulan = $request->get('bulan');
+                $stockOpname->tahun = $request->get('tahun');
+                $stockOpname->barang_jadi = $stockOpname->barang_jadi - $request->get('qty_po');
+                $stockOpname->save();
+            }
 
             return redirect()->back()->withStatus('Data berhasil diperbarui.');
         }
@@ -345,7 +381,12 @@ class PurchaseOrderController extends Controller
         try{
             $purchaseOrder = PurchaseOrder::findOrFail($id);
 
-            $purchaseOrder->delete();
+            StockOpname::where('bulan', $purchaseOrder->bulan)->where('tahun', $purchaseOrder->tahun)
+                ->update([
+                    'barang_jadi' => \DB::raw('barang_jadi+' . $purchaseOrder->qty_pemakaian)
+                ]);
+
+            $purchaseOrder->delete();   
 
             return redirect()->route('purchase-order.index')->withStatus('Data berhasil dihapus.');
         }

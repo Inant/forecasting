@@ -37,7 +37,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header card-header-success">
-                            <h4 class="card-title ">Tambah Pembelian Bahan Penunjang</h4>
+                            <h4 class="card-title ">Edit Pembelian Bahan Penunjang</h4>
                             {{-- <p class="card-category">Semua User</p> --}}
                         </div>
                         <div class="card-body">
@@ -86,7 +86,7 @@
                                         <div class="col-md-12 mb-3">
                                             <div class="form-group label-floating @error('qty_pembelian')
                                             has-error @enderror">
-                                                <label class="control-label">Quantity Pembelian Bahan Baku *</label>
+                                                <label class="control-label">Quantity Pembelian Bahan Penunjang *</label>
                                                 <div class="input-group">
                                                     <input type="number" step=".01" value="{{old('qty_pembelian', $pembelianSparepart->qty_pembelian)}}" class="form-control @error('qty_pembelian') is-invalid @enderror" name="qty_pembelian" autocomplete="off" />
                                                     <div class="input-group-prepend">

@@ -100,6 +100,12 @@
               <p>Purchase Order</p>
             </a>
           </li>
+          <li class="nav-item {{Request::segment(1) == 'stock-opname' ? 'active' : ''}} ">
+            <a class="nav-link" href="{{ url('stock-opname') }}">
+              <i class="material-icons">point_of_sale</i>
+              <p>Stock Opname</p>
+            </a>
+          </li>
         </ul>
       </div>
     </div>

@@ -32,10 +32,10 @@
             @endif
             <div class="row">
                 <div class="col-2">
-                    <a href="{{$btn['link']}}" class="btn btn-success"><i class="material-icons">add</i> {{$btn['text']}}</a>
+                    {{-- <a href="{{$btn['link']}}" class="btn btn-success"><i class="material-icons">add</i> {{$btn['text']}}</a> --}}
                 </div>
                 <div class="col-auto ml-auto">
-                    <form class="navbar-form" action="{{ route('purchase-order.index') }}" method="GET">
+                    <form class="navbar-form" action="{{ route('stock-opname') }}" method="GET">
                         <div class="input-group no-border">
                             {{-- <input type="text" value="{{Request::get('keyword')}}" class="form-control form-control-success" placeholder="Search..." name="keyword"> --}}
                             <select name="month" class="form-control" style="background:transparent;color:white" id="bulan">
@@ -60,7 +60,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header card-header-success">
-                            <h4 class="card-title ">List Purchase Order</h4>
+                            <h4 class="card-title ">List Stock Opname</h4>
                             {{-- <p class="card-category">Semua User</p> --}}
                         </div>
                         <div class="card-body">
@@ -71,9 +71,9 @@
                                             <td>#</td>
                                             <td>Bulan</td>
                                             <td>Tahun</td>
-                                            <td>Quantity</td>
-                                            <td>Nominal</td>
-                                            <td>Opsi</td>
+                                            <td>Bahan Baku</td>
+                                            <td>Bahan Penunjang</td>
+                                            <td>Barang Jadi</td>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -81,23 +81,14 @@
                                             $page = Request::get('page');
                                             $no = !$page || $page == 1 ? 1 : ($page - 1) * 10 + 1;
                                         @endphp
-                                        @foreach ($purchaseOrder as $value)
+                                        @foreach ($stockOpname as $value)
                                             <tr>
                                                 <td>{{$no}}</td>
                                                 <td>{{$value->bulan}}</td>
                                                 <td>{{$value->tahun}}</td>
-                                                <td>{{$value->qty_po}} M<sup>3</sup></td>
-                                                <td>{{number_format($value->nominal_po, 2, ',', '.')}}</td>
-                                                <td>
-                                                    <form action="{{ route('purchase-order.destroy', $value) }}" method="post">
-                                                        <a href="{{ route('purchase-order.edit', $value) }}" rel="tooltip" title="Edit" class="btn btn-white btn-link btn-sm"><i class="material-icons">edit</i></a>
-                                                        @csrf
-                                                        @method('delete')
-                                                        <button type="button" rel="tooltip" title="Hapus" class="btn btn-white btn-link btn-sm" onclick="confirm('{{ __("Apakah anda yakin ingin menghapus?") }}') ? this.parentElement.submit() : ''">
-                                                            <i class="material-icons">close</i>
-                                                        </button>
-                                                    </form>  
-                                                </td>
+                                                <td>{{$value->bahan_baku}} M<sup>3</sup></td>
+                                                <td>{{$value->sparepart}}</td>
+                                                <td>{{$value->barang_jadi}} M<sup>3</sup></td>
                                             </tr>
                                             @php
                                                 $no++
@@ -105,7 +96,7 @@
                                         @endforeach
                                     </tbody>
                                 </table>
-                                {{$purchaseOrder->appends(Request::all())->links('vendor.pagination.custom')}}
+                                {{$stockOpname->appends(Request::all())->links('vendor.pagination.custom')}}
                             </div>
                         </div>
                     </div>

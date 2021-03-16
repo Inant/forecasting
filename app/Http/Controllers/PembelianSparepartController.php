@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use \App\Models\PembelianSparepart;
+use \App\Models\StockOpname;
 
 class PembelianSparepartController extends Controller
 {
@@ -172,6 +173,22 @@ class PembelianSparepartController extends Controller
             $newPembelianSparepart->nominal_pembelian = $request->get('nominal_pembelian');
     
             $newPembelianSparepart->save();
+
+            $cekStockOpname = StockOpname::where('bulan', $request->get('bulan'))->where('tahun', $request->get('tahun'))->count();
+
+            if ($cekStockOpname > 0) {
+                StockOpname::where('bulan', $request->get('bulan'))->where('tahun', $request->get('tahun'))
+                ->update([
+                    'sparepart' => \DB::raw('sparepart+' . $request->get('qty_pembelian'))
+                ]);
+            }
+            else{
+                $stockOpname = new StockOpname;
+                $stockOpname->bulan = $request->get('bulan');
+                $stockOpname->tahun = $request->get('tahun');
+                $stockOpname->sparepart = $request->get('qty_pembelian');
+                $stockOpname->save();
+            }
     
             return redirect()->back()->withStatus('Data berhasil ditambahkan.');
         }
@@ -287,11 +304,33 @@ class PembelianSparepartController extends Controller
         ]);
         try{
 
+            StockOpname::where('bulan', $pembelianSparepart->bulan)->where('tahun', $pembelianSparepart->tahun)
+                ->update([
+                    'sparepart' => \DB::raw('sparepart-' . $pembelianSparepart->qty_pembelian)
+                ]);
+
             $pembelianSparepart->bulan = $request->get('bulan');
             $pembelianSparepart->tahun = $request->get('tahun');
             $pembelianSparepart->qty_pembelian = $request->get('qty_pembelian');
             $pembelianSparepart->nominal_pembelian = $request->get('nominal_pembelian');
             $pembelianSparepart->save();
+
+            $cekStockOpname = StockOpname::where('bulan', $request->get('bulan'))->where('tahun', $request->get('tahun'))->count();
+
+            if ($cekStockOpname > 0) {
+                StockOpname::where('bulan', $request->get('bulan'))->where('tahun', $request->get('tahun'))
+                ->update([
+                    'sparepart' => \DB::raw('sparepart+' . $request->get('qty_pembelian'))
+                ]);
+            }
+            else{
+                StockOpname::create([
+                    'bulan' => $request->get('bulan'),
+                    'tahun' => $request->get('tahun'),
+                    'sparepart' => $request->get('qty_pembelian'),
+                    'created_at' => date('Y-m-d H:i:s')
+                ]);
+            }
 
             return redirect()->back()->withStatus('Data berhasil diperbarui.');
         }
@@ -307,6 +346,11 @@ class PembelianSparepartController extends Controller
     {
         try{
             $pembelianSparepart = PembelianSparepart::findOrFail($id);
+
+            StockOpname::where('bulan', $pembelianSparepart->bulan)->where('tahun', $pembelianSparepart->tahun)
+                ->update([
+                    'sparepart' => \DB::raw('sparepart-' . $pembelianSparepart->qty_pembelian)
+                ]);
 
             $pembelianSparepart->delete();
 
