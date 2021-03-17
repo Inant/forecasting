@@ -32,4 +32,5 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::resource('pemakaian-barang-jadi', 'PemakaianBarangJadiController');
     Route::resource('purchase-order', 'PurchaseOrderController');
     Route::get('stock-opname', 'StockOpnameController@index')->name('stock-opname');
+    Route::get('peramalan-po', 'ForecastingController@index')->name('peramalan-po');
 });

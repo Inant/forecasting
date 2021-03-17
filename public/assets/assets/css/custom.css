@@ -5,3 +5,9 @@
 	.select2-results__option--highlighted[aria-selected] {
 	background: #3c4099;
 }
+.tooltip-inner{
+	color:#3c4099;
+background: #e3e6f0;
+	text-align:center;
+	border: 1px solid #3c4099;
+}
