@@ -63,8 +63,15 @@
                           $peramalan[0] = 0; //peramalan
                           $Xt_Ft[0] = 0;
                           $totalXt_Ft = 0;
+
+                          $label = "";
+                          $dataAktual = "";
+
+                          $getMeanRendemen = \App\Models\HasilProduksi::select(\DB::raw('SUM(rendemen) / COUNT(rendemen) AS meanRendemen'))->get()[0]->meanRendemen;
+
+                          $getMeanHargaLog = \App\Models\BahanBaku::select(\DB::raw('SUM(nominal_bahan_baku) / SUM(qty_bahan_baku) AS meanHargaLog'))->get()[0]->meanHargaLog;
                           // echo "<pre style='color:white'>";
-                          // print_r ($purchaseOrder);
+                          // print_r ($meanRendemen);
                           // echo "</pre>";
                           
                       @endphp
@@ -88,7 +95,7 @@
                                               <td>Parameter Pemulusan Trend Linier (bt)</td>
                                               <td>Parameter Pemulusan Trend Parabaolik (ct)</td>
                                               <td>Peramalan</td>
-                                              <td>Xt-Ft/Xt</td>
+                                              {{-- <td>Xt-Ft/Xt</td> --}}
                                           </tr>
                                       </thead>
                                       <tbody>
@@ -116,31 +123,72 @@
 
                                                 $totalXt_Ft += $Xt_Ft[$indexPo];
                                               }
+                                            //   label untuk chart
+                                              $indexPo < count($purchaseOrder) -1 ? $label .= $purchaseOrder[$indexPo]['tahun'].'-'.$purchaseOrder[$indexPo]['bulan'].',' : $label .= $purchaseOrder[$indexPo]['tahun'].'-'.$purchaseOrder[$indexPo]['bulan'];
+
+                                            //   data aktual untuk chart
+                                              $indexPo < count($purchaseOrder) -1 ? $dataAktual .= $purchaseOrder[$indexPo]['qty_po'].',' : $dataAktual .= $purchaseOrder[$indexPo]['qty_po'];
                                             @endphp
                                             <tr>
                                               {{-- <td>{{$indexPo + 1}}</td> --}}
-                                              <td>{{$purchaseOrder[$indexPo]['bulan']}}</td>
+                                              <td>{{$purchaseOrder[$indexPo]['bulan']}} </td>
                                               <td>{{$purchaseOrder[$indexPo]['tahun']}}</td>
-                                              <td>{{$purchaseOrder[$indexPo]['qty_po']}}</td>
+                                              <td>{{$purchaseOrder[$indexPo]['qty_po']}} M<sup>3</sup></td>
                                               <td>{{$smoothing1[$indexPo]}}</td>
                                               <td>{{$smoothing2[$indexPo]}}</td>
                                               <td>{{$smoothing3[$indexPo]}}</td>
                                               <td>{{$at[$indexPo]}}</td>
                                               <td>{{$bt[$indexPo]}}</td>
                                               <td>{{$ct[$indexPo]}}</td>
-                                              <td>{{$peramalan[$indexPo]}}</td>
-                                              <td>{{number_format($Xt_Ft[$indexPo], 2, '.', ',')}}</td>
+                                              <td>{{$peramalan[$indexPo]}} M<sup>3</sup></td>
+                                              {{-- <td>{{number_format($Xt_Ft[$indexPo], 2, '.', ',')}}</td> --}}
                                             </tr>
                                         @endfor
                                         @php
-                                            $mape = $totalXt_Ft / 26 * 100;
+                                            $mape = $totalXt_Ft / (count($purchaseOrder) - 1) * 100;
+                                            $seriesPeramalan = implode(',', $peramalan);
+
+                                            $kebutuhanBahanBaku = $peramalan[max(array_keys($peramalan))] / $getMeanRendemen * 100;
                                         @endphp
                                       </tbody>
                                   </table>
                                   <h4>Mape = {{round($mape, 3)}} %</h4>
-                              </div>
+                                  <h4>Kebutuhan Bahan Baku = {{number_format($kebutuhanBahanBaku, 2, ',', '.')}} M<sup>3</sup></h4>
+                                  <h4>Kebutuhan Biaya Bahan Baku = Rp {{number_format($kebutuhanBahanBaku * $getMeanHargaLog, 2, ',', '.')}}</h4>
+                                  
+                                </div>
                           </div>
                       </div>
+                      <br>
+                      <div class="col-xl-12 col-lg-12">
+                        <div class="card card-chart">
+                            <div class="card-header card-header-success">
+                            <div class="ct-chart" id="peramalanChart" data-series1="{{$dataAktual}}" data-series2="{{$seriesPeramalan}}" data-label="{{$label}}" style="overflow: auto"></div>
+                            </div>
+                            <div class="card-body">
+                            <h4 class="card-title">Grafik Peramalan</h4>
+                            <table>
+                                <tr>
+                                    <td>
+                                        <div id="aktual"></div>
+                                    </td>
+                                    <td>&nbsp;Data Aktual</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div id="peramalan"></div>
+                                    </td>
+                                    <td>&nbsp;Hasil Perhitungan Peramalan</td>
+                                </tr>
+                            </table>
+                            </div>
+                            <div class="card-footer">
+                            <div class="stats">
+                                {{-- <i class="material-icons">access_time</i> updated 4 minutes ago --}}
+                            </div>
+                            </div>
+                        </div>
+                    </div>
                   </div>
                 @endif
             </div>

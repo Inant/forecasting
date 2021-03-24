@@ -16,6 +16,7 @@
   <!-- CSS Just for demo purpose, don't include it in your project -->
   <link href="{{ asset('assets/demo/demo.css') }}" rel="stylesheet" />
   <link href="{{ asset('vendor/select2-develop/dist/css/select2.min.css') }}" rel="stylesheet" />
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
   <link href="{{ asset('assets/css/custom.css') }}" rel="stylesheet" />
 </head>
 
@@ -32,6 +33,7 @@
         </a></div>
       <div class="sidebar-wrapper">
         <ul class="nav">
+          <!-- Nav Item - Pages Collapse Menu -->
           <li class="nav-item {{Request::segment(1) == 'dashboard' ? 'active' : ''}}">
             <a class="nav-link" href="{{ route('dashboard') }}">
               <i class="material-icons">dashboard</i>
@@ -44,42 +46,90 @@
               <p>User</p>
             </a>
           </li>
-          <li class="nav-item {{Request::segment(1) == 'pembelian-bahan-baku' ? 'active' : ''}} ">
-            <a class="nav-link" href="{{ url('pembelian-bahan-baku') }}">
-              <i class="material-icons">cottage</i>
-              <p>Pembelian Bahan Baku</p>
+          <li class="nav-item {{Request::segment(1) == 'pembelian-bahan-baku' || Request::segment(1) == 'bahan-baku' ? 'active' : ''}}">
+            <a
+              class="nav-link collapsed"
+              href="#"
+              data-toggle="collapse"
+              data-target="#bahan-baku"
+              aria-expanded="true"
+              aria-controls="bahan-baku"
+            >
+            <i class="fas fa-fw fa-tree"></i>
+              <span>Bahan Baku</span>
             </a>
+            <div
+              id="bahan-baku"
+              class="collapse"
+              aria-labelledby="headingTwo"
+              data-parent="#accordionSidebar"
+            >
+              <div class="py-2 collapse-inner rounded ml-3">
+                <a class="nav-link" href="{{url('pembelian-bahan-baku')}}">
+                  <span>Pembelian</span>
+                </a>
+                <a class="nav-link" href="{{url('bahan-baku')}}">
+                  <span>Pemakaian</span>
+                </a>
+              </div>
+            </div>
           </li>
-          <li class="nav-item {{Request::segment(1) == 'pembelian-sparepart' ? 'active' : ''}} ">
-            <a class="nav-link" href="{{ url('pembelian-sparepart') }}">
-              <i class="material-icons">cottage</i>
-              <p>Pembelian Bahan Penunjang</p>
+          <li class="nav-item {{Request::segment(1) == 'pembelian-sparepart' || Request::segment(1) == 'pemakaian-sparepart' ? 'active' : ''}}">
+            <a
+              class="nav-link collapsed"
+              href="#"
+              data-toggle="collapse"
+              data-target="#bahan-penunjang"
+              aria-expanded="true"
+              aria-controls="bahan-penunjang"
+            >
+            <i class="fas fa-fw fa-tools"></i>
+              <span>Bahan Penunjang</span>
             </a>
+            <div
+              id="bahan-penunjang"
+              class="collapse"
+              aria-labelledby="headingTwo"
+              data-parent="#accordionSidebar"
+            >
+              <div class="py-2 collapse-inner rounded ml-3">
+                <a class="nav-link" href="{{url('pembelian-sparepart')}}">
+                  <span>Pembelian</span>
+                </a>
+                <a class="nav-link" href="{{url('pemakaian-sparepart')}}">
+                  <span>Pemakaian</span>
+                </a>
+              </div>
+            </div>
           </li>
-          <li class="nav-item {{Request::segment(1) == 'bahan-baku' ? 'active' : ''}} ">
-            <a class="nav-link" href="{{ url('bahan-baku') }}">
-              <i class="material-icons">cottage</i>
-              <p>Pemakaian Bahan Baku</p>
+          <li class="nav-item {{Request::segment(1) == 'hasil-produksi' || Request::segment(1) == 'pemakaian-barang-jadi' ? 'active' : ''}}">
+            <a
+              class="nav-link collapsed"
+              href="#"
+              data-toggle="collapse"
+              data-target="#barang-jadi"
+              aria-expanded="true"
+              aria-controls="barang-jadi"
+            >
+            <i class="fas fa-fw fa-box"></i>
+              <span>Barang Jadi</span>
             </a>
-          </li>
-          <li class="nav-item {{Request::segment(1) == 'pemakaian-sparepart' ? 'active' : ''}} ">
-            <a class="nav-link" href="{{ url('pemakaian-sparepart') }}">
-              <i class="material-icons">cottage</i>
-              <p>Pemakaian Bahan Penunjang</p>
-            </a>
-          </li>
-          <li class="nav-item {{Request::segment(1) == 'hasil-produksi' ? 'active' : ''}} ">
-            <a class="nav-link" href="{{ url('hasil-produksi') }}">
-              <i class="material-icons">layers</i>
-              <p>Hasil Produksi</p>
-            </a>
-          </li>
-          <li class="nav-item {{Request::segment(1) == 'pemakaian-barang-jadi' ? 'active' : ''}} ">
-            <a class="nav-link" href="{{ url('pemakaian-barang-jadi') }}">
-              <i class="material-icons">cottage</i>
-              <p>Pemakaian Barang Jadi</p>
-            </a>
-          </li>
+            <div
+              id="barang-jadi"
+              class="collapse"
+              aria-labelledby="headingTwo"
+              data-parent="#accordionSidebar"
+            >
+              <div class="py-2 collapse-inner rounded ml-3">
+                <a class="nav-link" href="{{url('hasil-produksi')}}">
+                  <span>Produksi</span>
+                </a>
+                <a class="nav-link" href="{{url('pemakaian-barang-jadi')}}">
+                  <span>Pemakaian</span>
+                </a>
+              </div>
+            </div>
+          </li>      
           <li class="nav-item {{Request::segment(1) == 'purchase-order' ? 'active' : ''}} ">
             <a class="nav-link" href="{{ url('purchase-order') }}">
               <i class="material-icons">point_of_sale</i>
@@ -88,13 +138,13 @@
           </li>
           <li class="nav-item {{Request::segment(1) == 'stock-opname' ? 'active' : ''}} ">
             <a class="nav-link" href="{{ url('stock-opname') }}">
-              <i class="material-icons">point_of_sale</i>
+              <i class="fas fa-fw fa-warehouse"></i>
               <p>Stock Opname</p>
             </a>
           </li>
           <li class="nav-item {{Request::segment(1) == 'peramalan-po' ? 'active' : ''}} ">
             <a class="nav-link" href="{{ url('peramalan-po') }}">
-              <i class="material-icons">point_of_sale</i>
+              <i class="fas fa-fw fa-chart-line"></i>
               <p>Peramalan</p>
             </a>
           </li>
@@ -223,7 +273,10 @@
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   
   <!-- Chartist JS -->
+  {{-- <script src="{{ asset('assets/js/plugins/chartist.min.js') }}"></script> --}}
+  {{-- <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script> --}}
   <script src="{{ asset('assets/js/plugins/chartist.min.js') }}"></script>
+  {{-- <script src="/bower_components/chartist-plugin-tooltip/dist/chartist-plugin-tooltip.js"></script> --}}
   <!--  Notifications Plugin    -->
   <script src="{{ asset('assets/js/plugins/bootstrap-notify.js') }}"></script>
   <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->

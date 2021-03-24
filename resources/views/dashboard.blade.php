@@ -3,23 +3,34 @@
     <div class="content">
         <div class="container-fluid">
         <div class="row">
-            <div class="col-xl-4 col-lg-12">
-            <div class="card card-chart">
-                <div class="card-header card-header-success">
-                <div class="ct-chart" id="dailySalesChart"></div>
-                </div>
-                <div class="card-body">
-                <h4 class="card-title">Daily Sales</h4>
-                <p class="card-category">
-                    <span class="text-success"><i class="fa fa-long-arrow-up"></i> 55% </span> increase in today sales.</p>
-                </div>
-                <div class="card-footer">
-                <div class="stats">
-                    <i class="material-icons">access_time</i> updated 4 minutes ago
-                </div>
+            <div class="col-xl-5 col-lg-12">
+                <div class="card card-chart">
+                    <div class="card-header card-header-success">
+                    <div class="ct-chart" id="dailySalesChart"></div>
+                    </div>
+                    <div class="card-body">
+                    <h4 class="card-title">Daily Sales</h4>
+                    <p class="card-category">
+                        <span class="text-success"><i class="fa fa-long-arrow-up"></i> 55% </span> increase in today sales.</p>
+                    </div>
+                    <div class="card-footer">
+                    <div class="stats">
+                        <i class="material-icons">access_time</i> updated 4 minutes ago
+                    </div>
+                    </div>
                 </div>
             </div>
-            </div>
+
+            {{-- <div class="col-xl-5 col-lg-12">
+                <div class="card card-chart">
+                    <div class="card-header card-header-success">
+                        <div id="po_chart" style="height: 200px"></div>
+                    </div>
+                    <div class="card-body">
+                    </div>
+                </div>
+            </div> --}}
+
             <div class="col-xl-4 col-lg-12">
             <div class="card card-chart">
                 <div class="card-header card-header-warning">
@@ -415,4 +426,21 @@
         </div>
         </div>
     </div>
+    <!-- Charting library -->
+    {{-- <script src="https://unpkg.com/echarts/dist/echarts.min.js"></script>
+    <!-- Chartisan -->
+    <script src="https://unpkg.com/@chartisan/echarts/dist/chartisan_echarts.js"></script>
+    <script>
+        const chart = new Chartisan({
+          el: '#po_chart',
+          url: "@chart('po_chart')",
+          hooks: new ChartisanHooks()
+            .colors(['#ECC94B', '#4299E1'])
+            // .legend({position:'bottom', color:'white'})
+            .legend({ position: 'bottom' })
+            // .title('This is a sample chart using chartisan!')
+            .datasets([{ type: 'line', fill: false }, 'line'])
+            .tooltip(),
+            });
+      </script> --}}
 @endsection

@@ -180,9 +180,10 @@ md = {
       /* ----------==========     Daily Sales Chart initialization    ==========---------- */
 
       dataDailySalesChart = {
-        labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
+        labels: ['2019-01', '2019-02', '2019-03', '2019-04', '2019-05', '2019-06', '2019-07'],
         series: [
-          [12, 17, 7, 17, 23, 18, 38]
+          [100.20, 200.90, 300.80, 150.32, 160.20, 140.80, 125.90],
+          [200.20, 300.90, 300.80, 150.32, 160.20, 140.80, 125.90]
         ]
       };
 
@@ -191,7 +192,7 @@ md = {
           tension: 0
         }),
         low: 0,
-        high: 50, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+        high: 500, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
         chartPadding: {
           top: 0,
           right: 0,
