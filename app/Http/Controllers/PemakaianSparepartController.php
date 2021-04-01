@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use \App\Models\PemakaianSparepart;
-use App\Models\StockOpname;
+// use App\Models\StockOpname;
 class PemakaianSparepartController extends Controller
 {
     private $param;
@@ -173,21 +173,21 @@ class PemakaianSparepartController extends Controller
     
             $newPemakaianSparepart->save();
 
-            $cekStockOpname = StockOpname::where('bulan', $request->get('bulan'))->where('tahun', $request->get('tahun'))->count();
+            // $cekStockOpname = StockOpname::where('bulan', $request->get('bulan'))->where('tahun', $request->get('tahun'))->count();
 
-            if ($cekStockOpname > 0) {
-                StockOpname::where('bulan', $request->get('bulan'))->where('tahun', $request->get('tahun'))
-                ->update([
-                    'sparepart' => \DB::raw('sparepart-' . $request->get('qty_pemakaian'))
-                ]);
-            }
-            else{
-                $stockOpname = new StockOpname;
-                $stockOpname->bulan = $request->get('bulan');
-                $stockOpname->tahun = $request->get('tahun');
-                $stockOpname->sparepart = $stockOpname->sparepart - $request->get('qty_pemakaian');
-                $stockOpname->save();
-            }
+            // if ($cekStockOpname > 0) {
+            //     StockOpname::where('bulan', $request->get('bulan'))->where('tahun', $request->get('tahun'))
+            //     ->update([
+            //         'sparepart' => \DB::raw('sparepart-' . $request->get('qty_pemakaian'))
+            //     ]);
+            // }
+            // else{
+            //     $stockOpname = new StockOpname;
+            //     $stockOpname->bulan = $request->get('bulan');
+            //     $stockOpname->tahun = $request->get('tahun');
+            //     $stockOpname->sparepart = $stockOpname->sparepart - $request->get('qty_pemakaian');
+            //     $stockOpname->save();
+            // }
 
             return redirect()->back()->withStatus('Data berhasil ditambahkan.');
         }
@@ -303,10 +303,10 @@ class PemakaianSparepartController extends Controller
         ]);
         try{
 
-            StockOpname::where('bulan', $pemakaianSparepart->bulan)->where('tahun', $pemakaianSparepart->tahun)
-                ->update([
-                    'sparepart' => \DB::raw('sparepart+' . $pemakaianSparepart->qty_pemakaian)
-                ]);
+            // StockOpname::where('bulan', $pemakaianSparepart->bulan)->where('tahun', $pemakaianSparepart->tahun)
+            //     ->update([
+            //         'sparepart' => \DB::raw('sparepart+' . $pemakaianSparepart->qty_pemakaian)
+            //     ]);
 
             $pemakaianSparepart->bulan = $request->get('bulan');
             $pemakaianSparepart->tahun = $request->get('tahun');
@@ -314,21 +314,21 @@ class PemakaianSparepartController extends Controller
             $pemakaianSparepart->nominal_pemakaian = $request->get('nominal_pemakaian');
             $pemakaianSparepart->save();
 
-            $cekStockOpname = StockOpname::where('bulan', $request->get('bulan'))->where('tahun', $request->get('tahun'))->count();
+            // $cekStockOpname = StockOpname::where('bulan', $request->get('bulan'))->where('tahun', $request->get('tahun'))->count();
 
-            if ($cekStockOpname > 0) {
-                StockOpname::where('bulan', $request->get('bulan'))->where('tahun', $request->get('tahun'))
-                ->update([
-                    'sparepart' => \DB::raw('sparepart-' . $request->get('qty_pemakaian'))
-                ]);
-            }
-            else{
-                $stockOpname = new StockOpname;
-                $stockOpname->bulan = $request->get('bulan');
-                $stockOpname->tahun = $request->get('tahun');
-                $stockOpname->sparepart = $stockOpname->sparepart - $request->get('qty_pemakaian');
-                $stockOpname->save();
-            }
+            // if ($cekStockOpname > 0) {
+            //     StockOpname::where('bulan', $request->get('bulan'))->where('tahun', $request->get('tahun'))
+            //     ->update([
+            //         'sparepart' => \DB::raw('sparepart-' . $request->get('qty_pemakaian'))
+            //     ]);
+            // }
+            // else{
+            //     $stockOpname = new StockOpname;
+            //     $stockOpname->bulan = $request->get('bulan');
+            //     $stockOpname->tahun = $request->get('tahun');
+            //     $stockOpname->sparepart = $stockOpname->sparepart - $request->get('qty_pemakaian');
+            //     $stockOpname->save();
+            // }
 
             return redirect()->back()->withStatus('Data berhasil diperbarui.');
         }
@@ -345,10 +345,10 @@ class PemakaianSparepartController extends Controller
         try{
             $pemakaianSparepart = PemakaianSparepart::findOrFail($id);
 
-            StockOpname::where('bulan', $pemakaianSparepart->bulan)->where('tahun', $pemakaianSparepart->tahun)
-                ->update([
-                    'sparepart' => \DB::raw('sparepart+' . $pemakaianSparepart->qty_pemakaian)
-                ]);
+            // StockOpname::where('bulan', $pemakaianSparepart->bulan)->where('tahun', $pemakaianSparepart->tahun)
+            //     ->update([
+            //         'sparepart' => \DB::raw('sparepart+' . $pemakaianSparepart->qty_pemakaian)
+            //     ]);
 
             $pemakaianSparepart->delete();
 

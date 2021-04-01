@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use \App\Models\HasilProduksi;
 use \App\Models\BahanBaku;
-use \App\Models\StockOpname;
+// use \App\Models\StockOpname;
 
 class HasilProduksiController extends Controller
 {
@@ -166,32 +166,36 @@ class HasilProduksiController extends Controller
             }
 
             // get pemakaian by periode produksi
-            $pemakaianBahanBaku = BahanBaku::select('qty_bahan_baku')->where('bulan', $request->get('bulan'))->where('tahun', $request->get('tahun'))->get()[0];
+            $pemakaianBahanBaku = BahanBaku::select('qty_bahan_baku')->where('bulan', $request->get('bulan'))->where('tahun', $request->get('tahun'));
+
+            if ($pemakaianBahanBaku->count() == 0) {
+                return back()->withError('Pemakaian Bahan Baku Untuk Periode Tersebut Belum Diinput.');
+            }
     
             $newHasilProduksi = new HasilProduksi;
     
             $newHasilProduksi->bulan = $request->get('bulan');
             $newHasilProduksi->tahun = $request->get('tahun');
             $newHasilProduksi->qty_hasil_produksi = $request->get('qty_hasil_produksi');
-            $newHasilProduksi->rendemen = $request->get('qty_hasil_produksi') / $pemakaianBahanBaku->qty_bahan_baku * 100;
+            $newHasilProduksi->rendemen = $request->get('qty_hasil_produksi') / $pemakaianBahanBaku->get()[0]->qty_bahan_baku * 100;
     
             $newHasilProduksi->save();
             
-            $cekStockOpname = StockOpname::where('bulan', $request->get('bulan'))->where('tahun', $request->get('tahun'))->count();
+            // $cekStockOpname = StockOpname::where('bulan', $request->get('bulan'))->where('tahun', $request->get('tahun'))->count();
 
-            if ($cekStockOpname > 0) {
-                StockOpname::where('bulan', $request->get('bulan'))->where('tahun', $request->get('tahun'))
-                ->update([
-                    'barang_jadi' => \DB::raw('barang_jadi+' . $request->get('qty_hasil_produksi'))
-                ]);
-            }
-            else{
-                $stockOpname = new StockOpname;
-                $stockOpname->bulan = $request->get('bulan');
-                $stockOpname->tahun = $request->get('tahun');
-                $stockOpname->barang_jadi = $request->get('qty_hasil_produksi');
-                $stockOpname->save();
-            }
+            // if ($cekStockOpname > 0) {
+            //     StockOpname::where('bulan', $request->get('bulan'))->where('tahun', $request->get('tahun'))
+            //     ->update([
+            //         'barang_jadi' => \DB::raw('barang_jadi+' . $request->get('qty_hasil_produksi'))
+            //     ]);
+            // }
+            // else{
+            //     $stockOpname = new StockOpname;
+            //     $stockOpname->bulan = $request->get('bulan');
+            //     $stockOpname->tahun = $request->get('tahun');
+            //     $stockOpname->barang_jadi = $request->get('qty_hasil_produksi');
+            //     $stockOpname->save();
+            // }
 
             return redirect()->back()->withStatus('Data berhasil ditambahkan.');
         }
@@ -306,10 +310,10 @@ class HasilProduksiController extends Controller
         ]);
         try{
 
-            StockOpname::where('bulan', $hasilProduksi->bulan)->where('tahun', $hasilProduksi->tahun)
-                ->update([
-                    'barang_jadi' => \DB::raw('barang_jadi-' . $hasilProduksi->qty_hasil_produksi)
-                ]);
+            // StockOpname::where('bulan', $hasilProduksi->bulan)->where('tahun', $hasilProduksi->tahun)
+            //     ->update([
+            //         'barang_jadi' => \DB::raw('barang_jadi-' . $hasilProduksi->qty_hasil_produksi)
+            //     ]);
             // get pemakaian by periode produksi
             $pemakaianBahanBaku = BahanBaku::select('qty_bahan_baku')->where('bulan', $request->get('bulan'))->where('tahun', $request->get('tahun'))->get()[0];
 
@@ -320,22 +324,22 @@ class HasilProduksiController extends Controller
             
             $hasilProduksi->save();
 
-            $cekStockOpname = StockOpname::where('bulan', $request->get('bulan'))->where('tahun', $request->get('tahun'))->count();
+            // $cekStockOpname = StockOpname::where('bulan', $request->get('bulan'))->where('tahun', $request->get('tahun'))->count();
 
-            if ($cekStockOpname > 0) {
-                StockOpname::where('bulan', $request->get('bulan'))->where('tahun', $request->get('tahun'))
-                ->update([
-                    'barang_jadi' => \DB::raw('barang_jadi+' . $request->get('qty_hasil_produksi'))
-                ]);
-            }
-            else{
-                StockOpname::create([
-                    'bulan' => $request->get('bulan'),
-                    'tahun' => $request->get('tahun'),
-                    'barang_jadi' => $request->get('qty_hasil_produksi'),
-                    'created_at' => date('Y-m-d H:i:s')
-                ]);
-            }
+            // if ($cekStockOpname > 0) {
+            //     StockOpname::where('bulan', $request->get('bulan'))->where('tahun', $request->get('tahun'))
+            //     ->update([
+            //         'barang_jadi' => \DB::raw('barang_jadi+' . $request->get('qty_hasil_produksi'))
+            //     ]);
+            // }
+            // else{
+            //     StockOpname::create([
+            //         'bulan' => $request->get('bulan'),
+            //         'tahun' => $request->get('tahun'),
+            //         'barang_jadi' => $request->get('qty_hasil_produksi'),
+            //         'created_at' => date('Y-m-d H:i:s')
+            //     ]);
+            // }
 
             return redirect()->back()->withStatus('Data berhasil diperbarui.');
         }
@@ -352,10 +356,10 @@ class HasilProduksiController extends Controller
         try{
             $hasilProduksi = HasilProduksi::findOrFail($id);
 
-            StockOpname::where('bulan', $hasilProduksi->bulan)->where('tahun', $hasilProduksi->tahun)
-                ->update([
-                    'barang_jadi' => \DB::raw('barang_jadi-' . $hasilProduksi->qty_hasil_produksi)
-                ]);
+            // StockOpname::where('bulan', $hasilProduksi->bulan)->where('tahun', $hasilProduksi->tahun)
+            //     ->update([
+            //         'barang_jadi' => \DB::raw('barang_jadi-' . $hasilProduksi->qty_hasil_produksi)
+            //     ]);
 
             $hasilProduksi->delete();
 

@@ -46,7 +46,42 @@
               <p>User</p>
             </a>
           </li>
-          <li class="nav-item {{Request::segment(1) == 'pembelian-bahan-baku' || Request::segment(1) == 'bahan-baku' ? 'active' : ''}}">
+          
+          <li class="nav-item {{Request::segment(1) == 'bahan-baku' ? 'active' : ''}} ">
+            <a class="nav-link" href="{{ url('bahan-baku') }}">
+              <i class="fas fa-tree fa-fw"></i>
+              <p>Pemakaian Bahan Baku</p>
+            </a>
+          </li>
+          
+          <li class="nav-item {{Request::segment(1) == 'pemakaian-sparepart' ? 'active' : ''}} ">
+            <a class="nav-link" href="{{ url('pemakaian-sparepart') }}">
+              <i class="fas fa-fw fa-tools"></i>
+              <p>Pemakaian Bahan Penunjang</p>
+            </a>
+          </li>
+          
+          <li class="nav-item {{Request::segment(1) == 'hasil-produksi' ? 'active' : ''}} ">
+            <a class="nav-link" href="{{ url('hasil-produksi') }}">
+              <i class="fas fa-fw fa-box"></i>
+              <p>Produksi Barang Jadi</p>
+            </a>
+          </li>
+
+          <li class="nav-item {{Request::segment(1) == 'purchase-order' ? 'active' : ''}} ">
+            <a class="nav-link" href="{{ url('purchase-order') }}">
+              <i class="fas fa-fw fa-cash-register"></i>
+              <p>Purchase Order</p>
+            </a>
+          </li>
+
+          <li class="nav-item {{Request::segment(1) == 'peramalan-po' ? 'active' : ''}} ">
+            <a class="nav-link" href="{{ url('peramalan-po') }}">
+              <i class="fas fa-fw fa-chart-line"></i>
+              <p>Peramalan</p>
+            </a>
+          </li>
+          {{-- <li class="nav-item {{Request::segment(1) == 'pembelian-bahan-baku' || Request::segment(1) == 'bahan-baku' ? 'active' : ''}}">
             <a
               class="nav-link collapsed"
               href="#"
@@ -73,8 +108,8 @@
                 </a>
               </div>
             </div>
-          </li>
-          <li class="nav-item {{Request::segment(1) == 'pembelian-sparepart' || Request::segment(1) == 'pemakaian-sparepart' ? 'active' : ''}}">
+          </li> --}}
+          {{-- <li class="nav-item {{Request::segment(1) == 'pembelian-sparepart' || Request::segment(1) == 'pemakaian-sparepart' ? 'active' : ''}}">
             <a
               class="nav-link collapsed"
               href="#"
@@ -101,8 +136,9 @@
                 </a>
               </div>
             </div>
-          </li>
-          <li class="nav-item {{Request::segment(1) == 'hasil-produksi' || Request::segment(1) == 'pemakaian-barang-jadi' ? 'active' : ''}}">
+          </li> --}}
+
+          {{-- <li class="nav-item {{Request::segment(1) == 'hasil-produksi' || Request::segment(1) == 'pemakaian-barang-jadi' ? 'active' : ''}}">
             <a
               class="nav-link collapsed"
               href="#"
@@ -129,25 +165,15 @@
                 </a>
               </div>
             </div>
-          </li>      
-          <li class="nav-item {{Request::segment(1) == 'purchase-order' ? 'active' : ''}} ">
-            <a class="nav-link" href="{{ url('purchase-order') }}">
-              <i class="material-icons">point_of_sale</i>
-              <p>Purchase Order</p>
-            </a>
-          </li>
-          <li class="nav-item {{Request::segment(1) == 'stock-opname' ? 'active' : ''}} ">
+          </li>       --}}
+          
+          {{-- <li class="nav-item {{Request::segment(1) == 'stock-opname' ? 'active' : ''}} ">
             <a class="nav-link" href="{{ url('stock-opname') }}">
               <i class="fas fa-fw fa-warehouse"></i>
               <p>Stock Opname</p>
             </a>
-          </li>
-          <li class="nav-item {{Request::segment(1) == 'peramalan-po' ? 'active' : ''}} ">
-            <a class="nav-link" href="{{ url('peramalan-po') }}">
-              <i class="fas fa-fw fa-chart-line"></i>
-              <p>Peramalan</p>
-            </a>
-          </li>
+          </li> --}}
+          
         </ul>
       </div>
     </div>

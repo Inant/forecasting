@@ -17,10 +17,7 @@ Route::get('/', function () {
     return redirect()->route('dashboard');
 });
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return view('dashboard', ['title' => 'Dashboard','pageTitle' => 'Dasboard']);
-
-})->name('dashboard');
+Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', 'DashboardController@index')->name('dashboard');
 
 Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::resource('user', 'UserController');

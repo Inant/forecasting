@@ -70,8 +70,19 @@
                           $getMeanRendemen = \App\Models\HasilProduksi::select(\DB::raw('SUM(rendemen) / COUNT(rendemen) AS meanRendemen'))->get()[0]->meanRendemen;
 
                           $getMeanHargaLog = \App\Models\BahanBaku::select(\DB::raw('SUM(nominal_bahan_baku) / SUM(qty_bahan_baku) AS meanHargaLog'))->get()[0]->meanHargaLog;
+
+                          $getTotalProduksi = \App\Models\HasilProduksi::select(\DB::raw('SUM(hasil_produksi.qty_hasil_produksi) AS ttlBjd'))->get()[0]->ttlBjd;
+
+                          $getTotalPemakaianSp = \App\Models\PemakaianSparepart::select(\DB::raw('SUM(qty_pemakaian) AS ttlPemakaianSp, SUM(nominal_pemakaian) AS ttlNominalPemakaianSp'))->get()[0];
+
+                          // mencari rata rata pemakaian sp untuk 1 m3 barang jadi
+                          $meanQtySp = $getTotalPemakaianSp->ttlPemakaianSp / $getTotalProduksi;
+
+                          // mencari rata2 harga sp untuk 1 pcs nya
+                          $meanHargaSp = $getTotalPemakaianSp->ttlNominalPemakaianSp / $getTotalPemakaianSp->ttlPemakaianSp;
+
                           // echo "<pre style='color:white'>";
-                          // print_r ($meanRendemen);
+                          // print_r ($meanQtySp);
                           // echo "</pre>";
                           
                       @endphp
@@ -118,14 +129,29 @@
 
                                               // peramalan
                                               if ($indexPo > 0) {
-                                                $peramalan[$indexPo] = round($at[$indexPo] + $bt[$indexPo] + 0.5 * $ct[$indexPo], 2);
+                                                $peramalan[$indexPo] = round($at[$indexPo-1] + $bt[$indexPo-1] + 0.5 * $ct[$indexPo-1], 2);
                                                 $Xt_Ft[$indexPo] = abs(($purchaseOrder[$indexPo]['qty_po'] - $peramalan[$indexPo] ) / $purchaseOrder[$indexPo]['qty_po']);
 
                                                 $totalXt_Ft += $Xt_Ft[$indexPo];
                                               }
+                                              
                                             //   label untuk chart
-                                              $indexPo < count($purchaseOrder) -1 ? $label .= $purchaseOrder[$indexPo]['tahun'].'-'.$purchaseOrder[$indexPo]['bulan'].',' : $label .= $purchaseOrder[$indexPo]['tahun'].'-'.$purchaseOrder[$indexPo]['bulan'];
-
+                                            $label .= $purchaseOrder[$indexPo]['tahun'].'-'.$purchaseOrder[$indexPo]['bulan'].',';
+                                              // if ($indexPo <= count($purchaseOrder) + 1) {
+                                              // }
+                                              // else{
+                                              //   if ($purchaseOrder[$indexPo]['bulan'] == 12) {
+                                              //     $purchaseOrder[$indexPo]['tahun'] += 1;
+                                              //     $purchaseOrder[$indexPo]['bulan'] = 1;
+                                              //   }
+                                              //   $label .= $purchaseOrder[$indexPo]['tahun'].'-'.$purchaseOrder[$indexPo]['bulan'];
+                                              // }
+                                              // $indexPo < count($purchaseOrder) -1 ? $label .= $purchaseOrder[$indexPo]['tahun'].'-'.$purchaseOrder[$indexPo]['bulan'].',' : $label .= $purchaseOrder[$indexPo]['tahun'].'-'.$purchaseOrder[$indexPo]['bulan'];
+                                              
+                                              // echo "<pre style='color:white'>";
+                                              // print_r ($label);
+                                              // echo "</pre>";
+                                              
                                             //   data aktual untuk chart
                                               $indexPo < count($purchaseOrder) -1 ? $dataAktual .= $purchaseOrder[$indexPo]['qty_po'].',' : $dataAktual .= $purchaseOrder[$indexPo]['qty_po'];
                                             @endphp
@@ -145,17 +171,40 @@
                                             </tr>
                                         @endfor
                                         @php
-                                            $mape = $totalXt_Ft / (count($purchaseOrder) - 1) * 100;
+                                            // peramalan periode selanjutnya
+                                            $nextPeriode = round($at[max(array_keys($at))] + $bt[max(array_keys($bt))] + 0.5 * $ct[max(array_keys($ct))], 2);
+                                            // label periode selanjutnya
+                                            if ($purchaseOrder[max(array_keys($purchaseOrder))]['bulan'] == 12) {
+                                              $nextMonth = 1;
+                                              $nextYear = $purchaseOrder[max(array_keys($purchaseOrder))]['bulan'] +1;
+                                            }
+                                            else{
+                                              $nextMonth = $purchaseOrder[max(array_keys($purchaseOrder))]['bulan'] + 1;
+                                              $nextYear = $purchaseOrder[max(array_keys($purchaseOrder))]['tahun'];
+                                            }
+                                            $nextLabel = $nextYear . '-'.$nextMonth;
+                                            $label .= $nextLabel;
+
+                                            array_push($peramalan, $nextPeriode);
+
+
+                                            $mape = $totalXt_Ft / (count($purchaseOrder)) * 100;
                                             $seriesPeramalan = implode(',', $peramalan);
 
-                                            $kebutuhanBahanBaku = $peramalan[max(array_keys($peramalan))] / $getMeanRendemen * 100;
+                                            // kebutuhan bahan baku
+                                            $kebutuhanBahanBaku = $nextPeriode / $getMeanRendemen * 100;
+
+                                            // kebutuhan sp
+                                            $kebutuhanSp = $nextPeriode * $meanQtySp;
                                         @endphp
                                       </tbody>
                                   </table>
+                                  <h4>Peramalan PO Periode Selanjutnya = {{$nextPeriode}} M<sup>3</sup></h4>
                                   <h4>Mape = {{round($mape, 3)}} %</h4>
                                   <h4>Kebutuhan Bahan Baku = {{number_format($kebutuhanBahanBaku, 2, ',', '.')}} M<sup>3</sup></h4>
                                   <h4>Kebutuhan Biaya Bahan Baku = Rp {{number_format($kebutuhanBahanBaku * $getMeanHargaLog, 2, ',', '.')}}</h4>
-                                  
+                                  <h4>Kebutuhan Bahan Penunjang = {{number_format($kebutuhanSp, 2, ',', '.')}} Pcs</h4>
+                                  <h4>Kebutuhan Biaya Bahan Penunjang = Rp {{number_format($kebutuhanSp * $meanHargaSp, 2, ',', '.')}}</h4>
                                 </div>
                           </div>
                       </div>

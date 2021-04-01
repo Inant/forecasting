@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\BahanBaku;
-use App\Models\StockOpname;
+// use App\Models\StockOpname;
 
 class BahanBakuController extends Controller
 {
@@ -174,21 +174,21 @@ class BahanBakuController extends Controller
     
             $newBahanBaku->save();
 
-            $cekStockOpname = StockOpname::where('bulan', $request->get('bulan'))->where('tahun', $request->get('tahun'))->count();
+            // $cekStockOpname = StockOpname::where('bulan', $request->get('bulan'))->where('tahun', $request->get('tahun'))->count();
 
-            if ($cekStockOpname > 0) {
-                StockOpname::where('bulan', $request->get('bulan'))->where('tahun', $request->get('tahun'))
-                ->update([
-                    'bahan_baku' => \DB::raw('bahan_baku-' . $request->get('qty_bahan_baku'))
-                ]);
-            }
-            else{
-                $stockOpname = new StockOpname;
-                $stockOpname->bulan = $request->get('bulan');
-                $stockOpname->tahun = $request->get('tahun');
-                $stockOpname->bahan_baku = $stockOpname->bahan_baku - $request->get('qty_bahan_baku');
-                $stockOpname->save();
-            }
+            // if ($cekStockOpname > 0) {
+            //     StockOpname::where('bulan', $request->get('bulan'))->where('tahun', $request->get('tahun'))
+            //     ->update([
+            //         'bahan_baku' => \DB::raw('bahan_baku-' . $request->get('qty_bahan_baku'))
+            //     ]);
+            // }
+            // else{
+            //     $stockOpname = new StockOpname;
+            //     $stockOpname->bulan = $request->get('bulan');
+            //     $stockOpname->tahun = $request->get('tahun');
+            //     $stockOpname->bahan_baku = $stockOpname->bahan_baku - $request->get('qty_bahan_baku');
+            //     $stockOpname->save();
+            // }
     
             return redirect()->back()->withStatus('Data berhasil ditambahkan.');
         }
@@ -304,10 +304,10 @@ class BahanBakuController extends Controller
         ]);
         try{
             // balikan stock opname terlebih dahulu
-            StockOpname::where('bulan', $bahanBaku->bulan)->where('tahun', $bahanBaku->tahun)
-                ->update([
-                    'bahan_baku' => \DB::raw('bahan_baku+' . $bahanBaku->qty_bahan_baku)
-                ]);
+            // StockOpname::where('bulan', $bahanBaku->bulan)->where('tahun', $bahanBaku->tahun)
+            //     ->update([
+            //         'bahan_baku' => \DB::raw('bahan_baku+' . $bahanBaku->qty_bahan_baku)
+            //     ]);
 
             $bahanBaku->bulan = $request->get('bulan');
             $bahanBaku->tahun = $request->get('tahun');
@@ -315,22 +315,22 @@ class BahanBakuController extends Controller
             $bahanBaku->nominal_bahan_baku = $request->get('nominal_bahan_baku');
             $bahanBaku->save();
 
-            $cekStockOpname = StockOpname::where('bulan', $request->get('bulan'))->where('tahun', $request->get('tahun'))->count();
+            // $cekStockOpname = StockOpname::where('bulan', $request->get('bulan'))->where('tahun', $request->get('tahun'))->count();
 
-            if ($cekStockOpname > 0) {
-                StockOpname::where('bulan', $request->get('bulan'))->where('tahun', $request->get('tahun'))
-                ->update([
-                    'bahan_baku' => \DB::raw('bahan_baku-' . $request->get('qty_bahan_baku'))
-                ]);
-            }
-            else{
-                StockOpname::create([
-                    'bulan' => $request->get('bulan'),
-                    'tahun' => $request->get('tahun'),
-                    'bahan_baku' => \DB::raw('bahan_baku-' . $request->get('qty_bahan_baku')),
-                    'created_at' => date('Y-m-d H:i:s')
-                ]);
-            }
+            // if ($cekStockOpname > 0) {
+            //     StockOpname::where('bulan', $request->get('bulan'))->where('tahun', $request->get('tahun'))
+            //     ->update([
+            //         'bahan_baku' => \DB::raw('bahan_baku-' . $request->get('qty_bahan_baku'))
+            //     ]);
+            // }
+            // else{
+            //     StockOpname::create([
+            //         'bulan' => $request->get('bulan'),
+            //         'tahun' => $request->get('tahun'),
+            //         'bahan_baku' => \DB::raw('bahan_baku-' . $request->get('qty_bahan_baku')),
+            //         'created_at' => date('Y-m-d H:i:s')
+            //     ]);
+            // }
 
             return redirect()->back()->withStatus('Data berhasil diperbarui.');
         }
@@ -347,10 +347,10 @@ class BahanBakuController extends Controller
         try{
             $bahanBaku = BahanBaku::findOrFail($id);
 
-            StockOpname::where('bulan', $bahanBaku->bulan)->where('tahun', $bahanBaku->tahun)
-                ->update([
-                    'bahan_baku' => \DB::raw('bahan_baku+' . $bahanBaku->qty_bahan_baku)
-                ]);
+            // StockOpname::where('bulan', $bahanBaku->bulan)->where('tahun', $bahanBaku->tahun)
+            //     ->update([
+            //         'bahan_baku' => \DB::raw('bahan_baku+' . $bahanBaku->qty_bahan_baku)
+            //     ]);
 
             $bahanBaku->delete();
 
