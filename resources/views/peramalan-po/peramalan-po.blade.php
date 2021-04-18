@@ -196,6 +196,9 @@
 
                                             // kebutuhan sp
                                             $kebutuhanSp = $nextPeriode * $meanQtySp;
+
+                                            // biaya tenaga kerja
+                                            $totalBiayaKaryawan = $biayaTenagaKerja->jumlah_karyawan * $biayaTenagaKerja->gaji_per_karyawan;
                                         @endphp
                                       </tbody>
                                   </table>
@@ -205,6 +208,7 @@
                                   <h4>Kebutuhan Biaya Bahan Baku = Rp {{number_format($kebutuhanBahanBaku * $getMeanHargaLog, 2, ',', '.')}}</h4>
                                   <h4>Kebutuhan Bahan Penunjang = {{number_format($kebutuhanSp, 2, ',', '.')}} Pcs</h4>
                                   <h4>Kebutuhan Biaya Bahan Penunjang = Rp {{number_format($kebutuhanSp * $meanHargaSp, 2, ',', '.')}}</h4>
+                                  <h4>Kebutuhan Biaya Tenaga Kerja = Rp {{number_format($totalBiayaKaryawan, 2, ',', '.')}}</h4>
                                 </div>
                           </div>
                       </div>

@@ -74,6 +74,13 @@
               <p>Purchase Order</p>
             </a>
           </li>
+          
+          <li class="nav-item {{Request::segment(1) == 'biaya-tenaga-kerja' ? 'active' : ''}} ">
+            <a class="nav-link" href="{{ url('biaya-tenaga-kerja') }}">
+              <i class="fas fa-fw fa-users"></i>
+              <p>Biaya Tenaga Kerja</p>
+            </a>
+          </li>
 
           <li class="nav-item {{Request::segment(1) == 'peramalan-po' ? 'active' : ''}} ">
             <a class="nav-link" href="{{ url('peramalan-po') }}">

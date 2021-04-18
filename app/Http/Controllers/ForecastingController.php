@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\PurchaseOrder;
+use \App\Models\BiayaTenagaKerja;
 
 use Illuminate\Http\Request;
 
@@ -70,6 +71,8 @@ class ForecastingController extends Controller
                 $this->param['alpha'] = $request->get('alpha');
 
                 $this->param['purchaseOrder'] = PurchaseOrder::select('id', 'bulan', 'tahun', 'qty_po')->get()->toArray();
+
+                $this->param['biayaTenagaKerja'] = BiayaTenagaKerja::first();
             }
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect()->back()->withError('Terjadi Kesalahan ' . $e->getMessage());
