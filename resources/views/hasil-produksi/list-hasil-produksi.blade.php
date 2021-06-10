@@ -37,7 +37,6 @@
                 <div class="col-auto ml-auto">
                     <form class="navbar-form" action="{{ route('hasil-produksi.index') }}" method="GET">
                         <div class="input-group no-border">
-                            {{-- <input type="text" value="{{Request::get('keyword')}}" class="form-control form-control-success" placeholder="Search..." name="keyword"> --}}
                             <select name="month" class="form-control" style="background:transparent;color:white" id="bulan">
                                 <option value="" style="color: black">--Bulan--</option>
                                 @foreach ($bulan as $item)
@@ -61,7 +60,6 @@
                     <div class="card">
                         <div class="card-header card-header-success">
                             <h4 class="card-title ">List Hasil Produksi</h4>
-                            {{-- <p class="card-category">Semua User</p> --}}
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -86,7 +84,7 @@
                                                 <td>{{$no}}</td>
                                                 <td>{{$value->bulan}}</td>
                                                 <td>{{$value->tahun}}</td>
-                                                <td>{{$value->qty_hasil_produksi}} M<sup>3</sup></td>
+                                                <td>{{number_format($value->qty_hasil_produksi, 2, ',', '.')}} M<sup>3</sup></td>
                                                 <td>{{$value->rendemen}} %</td>
                                                 <td>
                                                     <form action="{{ route('hasil-produksi.destroy', $value) }}" method="post">

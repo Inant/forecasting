@@ -31,4 +31,10 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::resource('biaya-tenaga-kerja', 'BiayaTenagaKerjaController');
     Route::get('stock-opname', 'StockOpnameController@index')->name('stock-opname');
     Route::get('peramalan-po', 'ForecastingController@index')->name('peramalan-po');
+    Route::prefix('laporan')->group(function () {
+        Route::get('pemakaian-bahan-baku', 'LaporanController@pemakaianBahanBaku');
+        Route::get('pemakaian-bahan-penunjang', 'LaporanController@pemakaianBahanPenunjang');
+        Route::get('produksi-barang-jadi', 'LaporanController@produksiBarangJadi');
+        Route::get('purchase-order', 'LaporanController@purchaseOrder');
+    });
 });

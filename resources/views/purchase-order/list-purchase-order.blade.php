@@ -37,7 +37,6 @@
                 <div class="col-auto ml-auto">
                     <form class="navbar-form" action="{{ route('purchase-order.index') }}" method="GET">
                         <div class="input-group no-border">
-                            {{-- <input type="text" value="{{Request::get('keyword')}}" class="form-control form-control-success" placeholder="Search..." name="keyword"> --}}
                             <select name="month" class="form-control" style="background:transparent;color:white" id="bulan">
                                 <option value="" style="color: black">--Bulan--</option>
                                 @foreach ($bulan as $item)
@@ -61,7 +60,6 @@
                     <div class="card">
                         <div class="card-header card-header-success">
                             <h4 class="card-title ">List Purchase Order</h4>
-                            {{-- <p class="card-category">Semua User</p> --}}
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -86,8 +84,8 @@
                                                 <td>{{$no}}</td>
                                                 <td>{{$value->bulan}}</td>
                                                 <td>{{$value->tahun}}</td>
-                                                <td>{{$value->qty_po}} M<sup>3</sup></td>
-                                                <td>{{number_format($value->nominal_po, 2, ',', '.')}}</td>
+                                                <td>{{number_format($value->qty_po, 2, ',', '.')}} M<sup>3</sup></td>
+                                                <td>Rp{{number_format($value->nominal_po, 2, ',', '.')}}</td>
                                                 <td>
                                                     <form action="{{ route('purchase-order.destroy', $value) }}" method="post">
                                                         <a href="{{ route('purchase-order.edit', $value) }}" rel="tooltip" title="Edit" class="btn btn-white btn-link btn-sm"><i class="material-icons">edit</i></a>

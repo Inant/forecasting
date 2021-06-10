@@ -10,7 +10,7 @@
                         <i class="fas fa-tree"></i>
                     </div>
                     <p class="card-category">Pemakaian Bahan Baku</p>
-                    <h4 class="card-title">{{number_format($bahanBaku->qty_bahan_baku, 2, '.', ',')}}
+                    <h4 class="card-title">{{number_format($bahanBaku->qty_bahan_baku, 2, ',', '.')}}
                         <small>M<sup>3</sup></small>
                     </h4>
                     </div>
@@ -30,7 +30,7 @@
                             <i class="fas fa-fw fa-tools"></i>
                         </div>
                         <p class="card-category">Pemakaian Bahan Penunjang</p>
-                        <h4 class="card-title">{{number_format($sparepart->qty_pemakaian, 2, '.', ',')}}
+                        <h4 class="card-title">{{number_format($sparepart->qty_pemakaian, 2, ',', '.')}}
                         </h4>
                     </div>
                     <div class="card-footer">
@@ -49,7 +49,7 @@
                             <i class="fas fa-fw fa-box"></i>
                         </div>
                         <p class="card-category">Produksi Barang Jadi</p>
-                        <h4 class="card-title">{{number_format($produksi->qty_hasil_produksi, 2, '.', ',')}}
+                        <h4 class="card-title">{{number_format($produksi->qty_hasil_produksi, 2, ',', '.')}}
                             <small>M<sup>3</sup></small>
                         </h4>
                     </div>
@@ -69,7 +69,7 @@
                             <i class="fas fa-fw fa-cash-register"></i>
                         </div>
                         <p class="card-category">Permintaan Purchase Order</p>
-                        <h4 class="card-title">{{number_format($purchaseOrder->qty_po, 2, '.', ',')}}
+                        <h4 class="card-title">{{number_format($purchaseOrder->qty_po, 2, ',', '.')}}
                             <small>M<sup>3</sup></small>
                         </h4>
                     </div>

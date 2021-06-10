@@ -72,7 +72,7 @@
                                             <td>Bulan</td>
                                             <td>Tahun</td>
                                             <td>Quantity</td>
-                                            <td>Nominal</td>
+                                            <td>Nominal Pemakaian Bahan Penunjang</td>
                                             <td>Opsi</td>
                                         </tr>
                                     </thead>
@@ -86,8 +86,8 @@
                                                 <td>{{$no}}</td>
                                                 <td>{{$value->bulan}}</td>
                                                 <td>{{$value->tahun}}</td>
-                                                <td>{{$value->qty_pemakaian}} M<sup>3</sup></td>
-                                                <td>Rp {{number_format($value->nominal_pemakaian, 2, ',', '.')}}</td>
+                                                <td>{{number_format($value->qty_pemakaian, 2, ',', '.')}} M<sup>3</sup></td>
+                                                <td>Rp{{number_format($value->nominal_pemakaian, 2, ',', '.')}}</td>
                                                 <td>
                                                     <form action="{{ route('pemakaian-sparepart.destroy', $value) }}" method="post">
                                                         <a href="{{ route('pemakaian-sparepart.edit', $value) }}" rel="tooltip" title="Edit" class="btn btn-white btn-link btn-sm"><i class="material-icons">edit</i></a>

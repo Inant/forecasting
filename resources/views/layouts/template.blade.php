@@ -88,6 +88,40 @@
               <p>Peramalan</p>
             </a>
           </li>
+          <li class="nav-item {{Request::segment(1) == 'laporan' ? 'active' : ''}}">
+            <a
+              class="nav-link collapsed"
+              href="#"
+              data-toggle="collapse"
+              data-target="#laporan"
+              aria-expanded="true"
+              aria-controls="laporan"
+            >
+            <i class="fas fa-fw fa-chart-bar"></i>
+              <span>Laporan</span>
+            </a>
+            <div
+              id="laporan"
+              class="collapse"
+              aria-labelledby="headingTwo"
+              data-parent="#accordionSidebar"
+            >
+              <div class="py-2 collapse-inner rounded ml-3">
+                <a class="nav-link" href="{{url('laporan/pemakaian-bahan-baku')}}">
+                  <span>Pemakaian Bahan Baku</span>
+                </a>
+                <a class="nav-link" href="{{url('laporan/pemakaian-bahan-penunjang')}}">
+                  <span>Pemakaian Bahan Penunjang</span>
+                </a>
+                <a class="nav-link" href="{{url('laporan/produksi-barang-jadi')}}">
+                  <span>Produksi Barang Jadi</span>
+                </a>
+                <a class="nav-link" href="{{url('laporan/purchase-order')}}">
+                  <span>Purchase Order</span>
+                </a>
+              </div>
+            </div>
+          </li>
           {{-- <li class="nav-item {{Request::segment(1) == 'pembelian-bahan-baku' || Request::segment(1) == 'bahan-baku' ? 'active' : ''}}">
             <a
               class="nav-link collapsed"

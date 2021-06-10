@@ -37,7 +37,6 @@
                 <div class="col-auto ml-auto">
                     <form class="navbar-form" action="{{ route('bahan-baku.index') }}" method="GET">
                         <div class="input-group no-border">
-                            {{-- <input type="text" value="{{Request::get('keyword')}}" class="form-control form-control-success" placeholder="Search..." name="keyword"> --}}
                             <select name="month" class="form-control" style="background:transparent;color:white" id="bulan">
                                 <option value="" style="color: black">--Bulan--</option>
                                 @foreach ($bulan as $item)
@@ -61,7 +60,6 @@
                     <div class="card">
                         <div class="card-header card-header-success">
                             <h4 class="card-title ">List Pemakaian Bahan Baku</h4>
-                            {{-- <p class="card-category">Semua User</p> --}}
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -72,7 +70,7 @@
                                             <td>Bulan</td>
                                             <td>Tahun</td>
                                             <td>Quantity</td>
-                                            <td>Nominal</td>
+                                            <td>Nominal Pemakaian Bahan Baku</td>
                                             <td>Opsi</td>
                                         </tr>
                                     </thead>
@@ -86,8 +84,8 @@
                                                 <td>{{$no}}</td>
                                                 <td>{{$value->bulan}}</td>
                                                 <td>{{$value->tahun}}</td>
-                                                <td>{{$value->qty_bahan_baku}} M<sup>3</sup></td>
-                                                <td>Rp {{number_format($value->nominal_bahan_baku, 2, ',', '.')}}</td>
+                                                <td>{{number_format($value->qty_bahan_baku,2, ',','.')}} M<sup>3</sup></td>
+                                                <td>Rp{{number_format($value->nominal_bahan_baku, 2, ',', '.')}}</td>
                                                 <td>
                                                     <form action="{{ route('bahan-baku.destroy', $value) }}" method="post">
                                                         <a href="{{ route('bahan-baku.edit', $value) }}" rel="tooltip" title="Edit" class="btn btn-white btn-link btn-sm"><i class="material-icons">edit</i></a>
