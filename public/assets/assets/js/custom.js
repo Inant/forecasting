@@ -181,4 +181,39 @@ $(document).ready(function () {
 
     md.startAnimationForLineChart(laporanPOChart);
   }
+
+  if ($('#dashboardChart').length != 0) {
+    /* ----------==========     Peramalan Chart initialization    ==========---------- */
+    var label = $('#dashboardChart').data('label').split(",");
+    var qty = $('#dashboardChart').data('series1').split(",").map(Number);
+    // var nominal = $('#dashboardChart').data('series2').split(",").map(Number);
+    // console.log($('#peramalanChart').data('label'))
+    // console.log(qty)
+    dataLaporanChart = {
+      labels: label,
+      series: [
+        qty,
+        // nominal
+      ]
+    };
+
+    optionsLaporanChart = {
+      lineSmooth: Chartist.Interpolation.cardinal({
+        tension: 0
+      }),
+      low: 0,
+      high: 500, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+      height: 500,
+      chartPadding: {
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0
+      }
+    }
+
+    var dashboardChart = new Chartist.Line('#dashboardChart', dataLaporanChart, optionsLaporanChart);
+
+    md.startAnimationForLineChart(dashboardChart);
+  }
 });

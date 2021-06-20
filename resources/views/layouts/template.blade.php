@@ -241,7 +241,7 @@
                   </p>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" href="javascript:void(0)">Ubah Password</a>
+                  <a class="dropdown-item" href="{{ url('user/ubah-password') }}">Ubah Password</a>
                   <div class="dropdown-divider"></div>
                   <form action="{{ route('logout') }}" method="POST">
                     @csrf

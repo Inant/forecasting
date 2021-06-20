@@ -20,6 +20,8 @@ Route::get('/', function () {
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', 'DashboardController@index')->name('dashboard');
 
 Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
+    Route::get('user/ubah-password', 'UserController@ubahPassword');
+    Route::put('user/save-password/{id}', 'UserController@savePassword');
     Route::resource('user', 'UserController');
     Route::resource('pembelian-bahan-baku', 'PembelianBahanBakuController');
     Route::resource('pembelian-sparepart', 'PembelianSparepartController');

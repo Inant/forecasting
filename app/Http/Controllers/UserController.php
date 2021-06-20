@@ -129,4 +129,42 @@ class UserController extends Controller
         }
         
     }
+
+    public function ubahPassword()
+    {
+        $this->param['title'] = 'Ubah Password';
+        $this->param['pageTitle'] = 'User';
+        // $this->param['btn']['text'] = 'Lihat Data';
+        // $this->param['btn']['link'] = route('user.index');
+
+        return view('user.ubah-password', $this->param);
+    }
+
+    public function savePassword(Request $request, $id)
+    {
+        $user = User::find($id);
+
+        $validatedData = $request->validate([
+            'old_password' => 'required',
+            'new_password' => 'required',
+            'confirm_password' => 'required|same:new_password',
+        ]);
+        try{
+            if (\Hash::check($request->get('old_password'), $user->password)) {
+                $user->password = \Hash::make($request->get('new_password'));
+                $user->save();
+                return redirect()->back()->withStatus('Data berhasil diperbarui.');
+            }
+            else{
+                return redirect()->back()->withError('Password lama tidak sesuai.');
+            }
+
+        }
+        catch(\Exception $e){
+            return redirect()->back()->withError('Terjadi kesalahan : '. $e->getMessage());
+        }
+        catch(\Illuminate\Database\QueryException $e){
+            return redirect()->back()->withError('Terjadi kesalahan pada database : '. $e->getMessage());
+        }
+    }
 }
