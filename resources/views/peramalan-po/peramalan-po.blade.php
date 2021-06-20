@@ -243,7 +243,12 @@
 
                         <div class="card">
                             <div class="card-header card-header-success">
-                                <h4 class="card-title ">Peramalan Untuk Periode {{date('m-Y', strtotime($nextLabel))}}</h4>
+                                @php
+                                    $forecastPeriod = explode('-',$nextLabel);
+                                    $year = $forecastPeriod[0];
+                                    $month = getNamaBulan($forecastPeriod[1]);
+                                @endphp
+                                <h4 class="card-title ">Peramalan Periode {{$month . '-'.$year}}</h4>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
