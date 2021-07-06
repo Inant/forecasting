@@ -29,16 +29,27 @@ class DashboardController extends Controller
             
             $getGrafikPo = PurchaseOrder::select('bulan', 'tahun', 'qty_po')->orderBy('tahun', 'DESC')->orderBy('bulan','DESC')->take(6)->get()->reverse();
 
+            $getGrafikRendemen = HasilProduksi::select('bulan', 'tahun', 'rendemen')->orderBy('tahun', 'DESC')->orderBy('bulan','DESC')->take(6)->get()->reverse();
+
             $qty = "";
+            $rendemen = "";
             $label = "";
+
             foreach ($getGrafikPo as $key => $value) {
                 $key < count($getGrafikPo) ? $qty .= $value->qty_po.',' : $qty .= $value->qty_po;
 
                 $key < count($getGrafikPo) ? $label .= getNamaBulan($value->bulan) . '-' . $value->tahun .',' : $label .= getNamaBulan($value->bulan) . '-' . $value->tahun;
             }
 
+            foreach ($getGrafikRendemen as $key => $value) {
+                $key < count($getGrafikRendemen) ? $rendemen .= $value->rendemen.',' : $rendemen .= $value->rendemen;
+
+                // $key < count($getGrafikPo) ? $label .= getNamaBulan($value->bulan) . '-' . $value->tahun .',' : $label .= getNamaBulan($value->bulan) . '-' . $value->tahun;
+            }
+
             $this->param['label'] = rtrim($label, ", ");
             $this->param['qty'] = rtrim($qty, ",");
+            $this->param['rendemen'] = rtrim($rendemen, ",");
 
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect()->back()->withError('Terjadi Kesalahan ' . $e->getMessage());

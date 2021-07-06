@@ -85,7 +85,7 @@
             </div>
 
             <div class="row">
-                <div class="col-xl-12 col-lg-12">
+                <div class="col-lg-6">
                     <div class="card card-chart">
                         <div class="card-header card-header-info">
                         <div class="ct-chart" id="dashboardChart" data-series1="{{$qty}}" data-label="{{$label}}" style="overflow: auto;"></div>
@@ -98,6 +98,36 @@
                                         <div id="aktual"></div>
                                     </td>
                                     <td>&nbsp;Quantity Purchase Order</td>
+                                </tr>
+                                {{-- <tr>
+                                    <td>
+                                        <div id="peramalan"></div>
+                                    </td>
+                                    <td>&nbsp;Hasil Perhitungan Peramalan</td>
+                                </tr> --}}
+                            </table>
+                        </div>
+                        <div class="card-footer">
+                            <div class="stats">
+                                {{-- <i class="material-icons">access_time</i> updated 4 minutes ago --}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="card card-chart">
+                        <div class="card-header card-header-primary">
+                        <div class="ct-chart" id="rendemenChart" data-series1="{{$rendemen}}" data-label="{{$label}}" style="overflow: auto;"></div>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">Grafik Rendemen</h4>
+                            <table>
+                                <tr>
+                                    <td>
+                                        <div id="aktual"></div>
+                                    </td>
+                                    <td>&nbsp;Rendemen</td>
                                 </tr>
                                 {{-- <tr>
                                     <td>

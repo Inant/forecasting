@@ -36,7 +36,7 @@
                         <div class="col-md-4">
                             <div class="form-group label-floating @error('alpha') has-error @enderror">
                                 <label class="control-label">Masukan Alpha (0 s/d 1) *</label>
-                                <input type="number" step=".01" value="{{Request::get('alpha')}}" class="form-control @error('alpha') is-invalid @enderror" name="alpha" autocomplete="off" placeholder="Alpha" min="0" max="1" required/>
+                                <input type="number" step=".01" value="{{Request::get('alpha') != null ? Request::get('alpha') : '0.16' }}" class="form-control @error('alpha') is-invalid @enderror" name="alpha" autocomplete="off" placeholder="Alpha" min="0.1" max="0.99" required/>
                                 <span class="material-icons form-control-feedback">clear</span>
                                 @error('alpha')
                                     <div class="invalid-feedback">
@@ -66,7 +66,7 @@
                             $label = "";
                             $dataAktual = "";
 
-                            $getMeanRendemen = \App\Models\HasilProduksi::select(\DB::raw('SUM(rendemen) / COUNT(rendemen) AS meanRendemen'))->get()[0]->meanRendemen;
+                            $getMeanRendemen = \App\Models\HasilProduksi::select(\DB::raw('AVG(rendemen) AS meanRendemen'))->get()[0]->meanRendemen;
 
                             $getMeanHargaLog = \App\Models\BahanBaku::select(\DB::raw('SUM(nominal_bahan_baku) / SUM(qty_bahan_baku) AS meanHargaLog'))->get()[0]->meanHargaLog;
 
@@ -79,10 +79,6 @@
 
                             // mencari rata2 harga sp untuk 1 pcs nya
                             $meanHargaSp = $getTotalPemakaianSp->ttlNominalPemakaianSp / $getTotalPemakaianSp->ttlPemakaianSp;
-
-                            // echo "<pre style='color:white'>";
-                            // print_r ($meanQtySp);
-                            // echo "</pre>";
                         @endphp
                         <div class="card">
                             <div class="card-header card-header-success">
@@ -134,20 +130,6 @@
                                                 }
                                                 //   label untuk chart
                                                 $label .= $purchaseOrder[$indexPo]['tahun'].'-'.$purchaseOrder[$indexPo]['bulan'].',';
-                                                // if ($indexPo <= count($purchaseOrder) + 1) {
-                                                // }
-                                                // else{
-                                                //   if ($purchaseOrder[$indexPo]['bulan'] == 12) {
-                                                //     $purchaseOrder[$indexPo]['tahun'] += 1;
-                                                //     $purchaseOrder[$indexPo]['bulan'] = 1;
-                                                //   }
-                                                //   $label .= $purchaseOrder[$indexPo]['tahun'].'-'.$purchaseOrder[$indexPo]['bulan'];
-                                                // }
-                                                // $indexPo < count($purchaseOrder) -1 ? $label .= $purchaseOrder[$indexPo]['tahun'].'-'.$purchaseOrder[$indexPo]['bulan'].',' : $label .= $purchaseOrder[$indexPo]['tahun'].'-'.$purchaseOrder[$indexPo]['bulan'];
-                                                
-                                                // echo "<pre style='color:white'>";
-                                                // print_r ($label);
-                                                // echo "</pre>";
                                                 
                                                 //   data aktual untuk chart
                                                 $indexPo < count($purchaseOrder) -1 ? $dataAktual .= $purchaseOrder[$indexPo]['qty_po'].',' : $dataAktual .= $purchaseOrder[$indexPo]['qty_po'];
@@ -184,7 +166,6 @@
 
                                             array_push($peramalan, $nextPeriode);
 
-
                                             $mape = $totalXt_Ft / (count($purchaseOrder)) * 100;
                                             $seriesPeramalan = implode(',', $peramalan);
 
@@ -202,8 +183,6 @@
                                 </div>
                             </div>
                         </div>
-                        
-
                         {{-- <h4>Peramalan PO Periode Selanjutnya = {{number_format($nextPeriode, 2, ',', '.')}} M<sup>3</sup></h4>
                         <h4>Mape = {{round($mape, 3)}} %</h4>
                         <h4>Kebutuhan Bahan Baku = {{number_format($kebutuhanBahanBaku, 2, ',', '.')}} M<sup>3</sup></h4>
@@ -240,7 +219,9 @@
                                 </div>
                             </div>
                         </div>
-
+                        {{-- @php
+                            echo $meanHargaSp;
+                        @endphp --}}
                         <div class="card">
                             <div class="card-header card-header-success">
                                 @php
@@ -262,6 +243,7 @@
                                                 <th>Kebutuhan Bahan Penunjang</th>
                                                 <th>Kebutuhan Biaya Bahan Penunjang</th>
                                                 <th>Kebutuhan Biaya Tenaga Kerja</th>
+                                                <th>Total Biaya Produksi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -273,6 +255,7 @@
                                                 <td>{{number_format($kebutuhanSp, 2, ',', '.')}} Pcs</td>
                                                 <td>Rp{{number_format($kebutuhanSp * $meanHargaSp, 2, ',', '.')}}</td>
                                                 <td>Rp{{number_format($totalBiayaKaryawan, 2, ',', '.')}}</td>
+                                                <td><b>Rp{{number_format($kebutuhanBahanBaku * $getMeanHargaLog + $kebutuhanSp * $meanHargaSp + $totalBiayaKaryawan, 2, ',', '.')}}</b></td>
                                             </tr>
                                         </tbody>
                                     </table>

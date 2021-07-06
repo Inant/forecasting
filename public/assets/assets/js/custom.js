@@ -203,7 +203,7 @@ $(document).ready(function () {
       }),
       low: 0,
       high: 500, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
-      height: 500,
+      height: 200,
       chartPadding: {
         top: 0,
         right: 0,
@@ -215,5 +215,40 @@ $(document).ready(function () {
     var dashboardChart = new Chartist.Line('#dashboardChart', dataLaporanChart, optionsLaporanChart);
 
     md.startAnimationForLineChart(dashboardChart);
+  }
+
+  if ($('#rendemenChart').length != 0) {
+    /* ----------==========     Peramalan Chart initialization    ==========---------- */
+    var label = $('#rendemenChart').data('label').split(",");
+    var qty = $('#rendemenChart').data('series1').split(",").map(Number);
+    // var nominal = $('#rendemenChart').data('series2').split(",").map(Number);
+    // console.log($('#peramalanChart').data('label'))
+    // console.log(qty)
+    dataLaporanChart = {
+      labels: label,
+      series: [
+        qty,
+        // nominal
+      ]
+    };
+
+    optionsLaporanChart = {
+      lineSmooth: Chartist.Interpolation.cardinal({
+        tension: 0
+      }),
+      low: 0,
+      high: 100, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+      height: 200,
+      chartPadding: {
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0
+      }
+    }
+
+    var rendemenChart = new Chartist.Bar('#rendemenChart', dataLaporanChart, optionsLaporanChart);
+
+    md.startAnimationForLineChart(rendemenChart);
   }
 });
