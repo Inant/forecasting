@@ -81,6 +81,13 @@
               <p>Biaya Tenaga Kerja</p>
             </a>
           </li>
+          
+          <li class="nav-item {{Request::segment(1) == 'set-harga-log' ? 'active' : ''}} ">
+            <a class="nav-link" href="{{ url('set-harga-log') }}">
+              <i class="fas fa-fw fa-tag"></i>
+              <p>Set Harga Bahan Baku </p>
+            </a>
+          </li>
 
           <li class="nav-item {{Request::segment(1) == 'peramalan-po' ? 'active' : ''}} ">
             <a class="nav-link" href="{{ url('peramalan-po') }}">

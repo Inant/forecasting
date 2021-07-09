@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\PurchaseOrder;
 use \App\Models\BiayaTenagaKerja;
-
+use App\Models\SetHargaLog;
 use Illuminate\Http\Request;
 
 class ForecastingController extends Controller
@@ -67,13 +67,14 @@ class ForecastingController extends Controller
         $this->param['year'] = PurchaseOrder::select('tahun')->orderBy('tahun', 'DESC')->groupBy('tahun')->get();
 
         try {
-            if ($request->get('alpha')) {
-                $this->param['alpha'] = $request->get('alpha');
+            // if ($request->get('alpha')) {
+                
+            // }
+            $this->param['alpha'] = 0.16;
+            $this->param['purchaseOrder'] = PurchaseOrder::select('id', 'bulan', 'tahun', 'qty_po')->get()->toArray();
 
-                $this->param['purchaseOrder'] = PurchaseOrder::select('id', 'bulan', 'tahun', 'qty_po')->get()->toArray();
-
-                $this->param['biayaTenagaKerja'] = BiayaTenagaKerja::first();
-            }
+            $this->param['biayaTenagaKerja'] = BiayaTenagaKerja::first();
+            $this->param['hargaLog'] = SetHargaLog::first()->harga_log;
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect()->back()->withError('Terjadi Kesalahan ' . $e->getMessage());
         }

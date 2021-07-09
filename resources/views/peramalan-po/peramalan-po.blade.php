@@ -31,7 +31,7 @@
                 </div>
             @endif
             <div class="row">
-                <form class="col-md-12" action="{{ route('peramalan-po') }}" method="GET">
+                {{-- <form class="col-md-12" action="{{ route('peramalan-po') }}" method="GET">
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group label-floating @error('alpha') has-error @enderror">
@@ -49,8 +49,8 @@
                             <button type="submit" title="Hitung Peramalan" data-toggle="tooltip" class="btn btn-success"><i class="fa fa-calculator"></i></button>
                         </div>
                     </div>
-                </form>
-                @if (Request::get('alpha'))
+                </form> --}}
+                {{-- @if (Request::get('alpha')) --}}
                     <div class="col-md-12">
                         @php
                             $smoothing1[0] = $purchaseOrder[0]['qty_po']; //smoothing pertama
@@ -68,7 +68,7 @@
 
                             $getMeanRendemen = \App\Models\HasilProduksi::select(\DB::raw('AVG(rendemen) AS meanRendemen'))->get()[0]->meanRendemen;
 
-                            $getMeanHargaLog = \App\Models\BahanBaku::select(\DB::raw('SUM(nominal_bahan_baku) / SUM(qty_bahan_baku) AS meanHargaLog'))->get()[0]->meanHargaLog;
+                            // $meanHargaLog = \App\Models\BahanBaku::select(\DB::raw('SUM(nominal_bahan_baku) / SUM(qty_bahan_baku) AS meanHargaLog'))->get()[0]->meanHargaLog;
 
                             $getTotalProduksi = \App\Models\HasilProduksi::select(\DB::raw('SUM(hasil_produksi.qty_hasil_produksi) AS ttlBjd'))->get()[0]->ttlBjd;
 
@@ -186,7 +186,7 @@
                         {{-- <h4>Peramalan PO Periode Selanjutnya = {{number_format($nextPeriode, 2, ',', '.')}} M<sup>3</sup></h4>
                         <h4>Mape = {{round($mape, 3)}} %</h4>
                         <h4>Kebutuhan Bahan Baku = {{number_format($kebutuhanBahanBaku, 2, ',', '.')}} M<sup>3</sup></h4>
-                        <h4>Kebutuhan Biaya Bahan Baku = Rp{{number_format($kebutuhanBahanBaku * $getMeanHargaLog, 2, ',', '.')}}</h4>
+                        <h4>Kebutuhan Biaya Bahan Baku = Rp{{number_format($kebutuhanBahanBaku * $hargaLog, 2, ',', '.')}}</h4>
                         <h4>Kebutuhan Bahan Penunjang = {{number_format($kebutuhanSp, 2, ',', '.')}} Pcs</h4>
                         <h4>Kebutuhan Biaya Bahan Penunjang = Rp{{number_format($kebutuhanSp * $meanHargaSp, 2, ',', '.')}}</h4>
                         <h4>Kebutuhan Biaya Tenaga Kerja = Rp{{number_format($totalBiayaKaryawan, 2, ',', '.')}}</h4> --}}
@@ -220,7 +220,7 @@
                             </div>
                         </div>
                         {{-- @php
-                            echo $meanHargaSp;
+                            echo $hargaLog;
                         @endphp --}}
                         <div class="card">
                             <div class="card-header card-header-success">
@@ -251,11 +251,11 @@
                                                 <td>{{round($mape, 3)}} %</td>
                                                 <td>{{number_format($nextPeriode, 2, ',', '.')}} M<sup>3</sup></td>
                                                 <td>{{number_format($kebutuhanBahanBaku, 2, ',', '.')}} M<sup>3</sup></td>
-                                                <td>Rp{{number_format($kebutuhanBahanBaku * $getMeanHargaLog, 2, ',', '.')}}</td>
+                                                <td>Rp{{number_format($kebutuhanBahanBaku * $hargaLog, 2, ',', '.')}}</td>
                                                 <td>{{number_format($kebutuhanSp, 2, ',', '.')}} Pcs</td>
                                                 <td>Rp{{number_format($kebutuhanSp * $meanHargaSp, 2, ',', '.')}}</td>
                                                 <td>Rp{{number_format($totalBiayaKaryawan, 2, ',', '.')}}</td>
-                                                <td><b>Rp{{number_format($kebutuhanBahanBaku * $getMeanHargaLog + $kebutuhanSp * $meanHargaSp + $totalBiayaKaryawan, 2, ',', '.')}}</b></td>
+                                                <td><b>Rp{{number_format($kebutuhanBahanBaku * $hargaLog + $kebutuhanSp * $meanHargaSp + $totalBiayaKaryawan, 2, ',', '.')}}</b></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -263,7 +263,7 @@
                             </div>
                         </div>
                     </div>
-                @endif
+                {{-- @endif --}}
             </div>
         </div>
     </div>
